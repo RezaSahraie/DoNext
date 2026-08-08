@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="csrf-token" content="{{ csrf_token() }}">
+    <meta name="theme-color" content="#4f46e5">
     <title>@yield('title', 'DoNext')</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script>tailwind.config = { darkMode: 'class' }</script>
@@ -14,6 +15,7 @@
         body { font-family: Vazirmatn, Inter, sans-serif; }
         [x-cloak] { display: none !important; }
         ::selection { background: rgb(99 102 241 / .2); }
+        :focus-visible { outline: 3px solid rgb(99 102 241 / .45); outline-offset: 2px; }
     </style>
     <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
     @livewireStyles
@@ -29,6 +31,7 @@
             </main>
         </div>
     </div>
+    <x-toast />
     @livewireScripts
 </body>
 </html>
