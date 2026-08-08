@@ -7,6 +7,7 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-
-
 Route::get('/dashboard', Dashboard::class)->name('dashboard');
+
+// UI-only pages. Backend logic will be added later.
+Route::view('/tasks', 'tasks')->name('tasks');
