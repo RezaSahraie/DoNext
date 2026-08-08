@@ -1,0 +1,14 @@
+@extends('layouts.app')
+@section('title','Categories — DoNext')
+@section('heading','Categories')
+@section('content')
+<div x-data="{show:false}" class="space-y-6">
+<section class="flex flex-col gap-5 md:flex-row md:items-end md:justify-between"><div><p class="mb-2 text-sm font-semibold text-indigo-600 dark:text-indigo-400">دسته‌بندی کارها</p><h2 class="text-3xl font-black sm:text-4xl">دسته‌بندی‌ها</h2><p class="mt-2 text-sm text-slate-500 dark:text-slate-400">کارهایت را با دسته‌بندی‌های رنگی مرتب نگه دار.</p></div><button @click="show=true" class="rounded-2xl bg-indigo-600 px-5 py-3 text-sm font-bold text-white shadow-lg shadow-indigo-500/20 hover:bg-indigo-700">+ دسته جدید</button></section>
+<div class="grid gap-4 sm:grid-cols-2 xl:grid-cols-3">
+@foreach([['Work','کار','24','indigo'],['Personal','شخصی','18','emerald'],['Study','مطالعه','12','amber'],['Health','سلامت','8','rose'],['Projects','پروژه‌ها','15','violet'],['Ideas','ایده‌ها','6','cyan']] as $c)
+<div class="group rounded-3xl border border-slate-200 bg-white p-5 shadow-sm transition hover:-translate-y-1 hover:shadow-lg dark:border-slate-800 dark:bg-slate-900"><div class="flex items-center justify-between"><div class="grid h-12 w-12 place-items-center rounded-2xl bg-{{$c[3]}}-100 text-lg font-black text-{{$c[3]}}-600 dark:bg-{{$c[3]}}-500/10 dark:text-{{$c[3]}}-400">#</div><button class="text-slate-300 hover:text-slate-600">⋮</button></div><h3 class="mt-5 text-lg font-black">{{$c[0]}}</h3><p class="mt-1 text-xs text-slate-400">{{$c[1]}}</p><div class="mt-5 flex items-center justify-between"><span class="text-xs font-bold text-slate-500 dark:text-slate-400">{{$c[2]}} tasks</span><div class="h-2 w-24 overflow-hidden rounded-full bg-slate-100 dark:bg-slate-800"><div class="h-full w-2/3 rounded-full bg-indigo-500"></div></div></div></div>
+@endforeach
+</div>
+<div x-show="show" x-cloak x-transition class="fixed inset-0 z-[100] grid place-items-center bg-slate-950/50 p-4 backdrop-blur-sm"><div @click.outside="show=false" class="w-full max-w-md rounded-3xl bg-white p-6 shadow-2xl dark:bg-slate-900"><div class="flex justify-between"><div><h3 class="text-xl font-black">دسته جدید</h3><p class="mt-1 text-xs text-slate-400">فقط رابط کاربری</p></div><button @click="show=false">✕</button></div><div class="mt-6 space-y-4"><input placeholder="نام دسته‌بندی" class="h-12 w-full rounded-xl border border-slate-200 bg-slate-50 px-4 text-sm dark:border-slate-700 dark:bg-slate-800"><input type="color" class="h-12 w-full rounded-xl border border-slate-200 bg-white p-1 dark:border-slate-700 dark:bg-slate-800"><button @click="show=false" class="w-full rounded-xl bg-indigo-600 py-3 text-sm font-bold text-white">ایجاد دسته</button></div></div></div>
+</div>
+@endsection
