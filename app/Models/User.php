@@ -45,4 +45,24 @@ class User extends Authenticatable
             'password' => 'hashed',
         ];
     }
+
+
+    #------------------------------------------------
+    /**
+     * Defines the relationship between a User and their tasks.
+     *
+     * A User can have many tasks.
+     */
+    public function tasks(){
+        return $this->hasMany(Task::class);
+    }
+
+    /**
+     * Defines the relationship between a User and their category.
+     *
+     * A User can have many categories.
+     */
+    public function categories() {
+        return $this->hasMany(Category::class);
+    }
 }
