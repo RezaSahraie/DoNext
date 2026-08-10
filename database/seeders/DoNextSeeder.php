@@ -20,20 +20,46 @@ class DoNextSeeder extends Seeder
             'email' => 'test@donext.test'
         ]);
 
-        $categories = Category::factory()->count(3)->create([
-            'user_id' => $user->id,
-        ]);
+        $categories = collect(['Work', 'Learning', 'Personal'])
+            ->map(function (string $name) use ($user) {
+                return Category::factory()->create([
+                    'user_id' => $user->id,
+                    'name' => $name,
+            ]);
+        });
+        
 
         foreach ($categories as $category) {
-            Task::factory()->count(5)->create([
-                'user_id' => $user->id,
-                'category_id' => $category->id,
+            Task::factory()
+                ->pending()
+                ->count(2)
+                ->create([
+                    'user_id' => $user->id,
+                    'category_id' => $category->id,
+            ]);
+
+            Task::factory()
+                ->inProgress()
+                ->create([
+                    'user_id' => $user->id,
+                    'category_id' => $category->id,
+            ]);
+
+            Task::factory()
+                ->completed()
+                ->count(2)
+                ->create([
+                    'user_id' => $user->id,
+                    'category_id' => $category->id,
             ]);
         }
 
-        Task::factory()->count(3)->create([
-            'user_id' => $user->id,
-            'category_id' => null,
+        Task::factory()
+            ->pending()
+            ->count(3)
+            ->create([
+                'user_id' => $user->id,
+                'category_id' => null,
         ]);
     }
 }
