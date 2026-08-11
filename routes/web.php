@@ -1,5 +1,6 @@
 <?php
 
+use App\Livewire\Auth\Login;
 use App\Livewire\Auth\Register;
 use App\Livewire\Dashboard;
 use Illuminate\Support\Facades\Route;
@@ -18,5 +19,5 @@ Route::view('/statistics', 'statistics')->name('statistics');
 Route::view('/task-details', 'task-details')->name('task-details');
 Route::view('/profile', 'profile')->name('profile');
 Route::view('/settings', 'settings')->name('settings');
-Route::get('/login', function (){ return view('auth.login'); })->name('login');
+Route::get('/login', Login::class)->name('login');
 Route::get('/register', Register::class)->name('register');
