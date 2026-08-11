@@ -5,6 +5,8 @@ namespace App\Livewire\Auth;
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
+use Livewire\Attributes\Layout;
+use Livewire\Attributes\Title;
 use Livewire\Component;
 
 class Register extends Component
@@ -18,6 +20,8 @@ class Register extends Component
      * Register new User
      */
 
+    #[Layout('layouts.auth')]
+    #[Title('Register — DoNext')]
     public function register() : void {
         $validated = $this->validate([
             'name' => ['required', 'string', 'max:255'],
