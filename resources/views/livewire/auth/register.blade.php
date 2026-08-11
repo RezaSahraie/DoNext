@@ -48,7 +48,6 @@
         {{-- Registration Form --}}
         <form wire:submit="register" class="mt-8 space-y-4">
 
-            @csrf
             {{-- Name --}}
             <label class="block text-sm font-bold">
 

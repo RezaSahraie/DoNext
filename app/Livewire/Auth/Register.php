@@ -9,6 +9,9 @@ use Livewire\Attributes\Layout;
 use Livewire\Attributes\Title;
 use Livewire\Component;
 
+
+#[Layout('layouts.auth')]
+#[Title('Register — DoNext')]
 class Register extends Component
 {
     public string $name = '';
@@ -20,8 +23,6 @@ class Register extends Component
      * Register new User
      */
 
-    #[Layout('layouts.auth')]
-    #[Title('Register — DoNext')]
     public function register() : void {
         $validated = $this->validate([
             'name' => ['required', 'string', 'max:255'],
