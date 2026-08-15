@@ -154,7 +154,7 @@
                         </label>
 
                         {{-- Forgot password will be implemented later --}}
-                        <a href="#" class="font-bold text-indigo-600">
+                        <a href="{{ route('password.request') }}" class="font-bold text-indigo-600">
                             <span x-show="lang === 'fa'">
                                 فراموشی رمز عبور؟
                             </span>

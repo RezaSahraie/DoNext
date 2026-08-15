@@ -1,7 +1,9 @@
 <?php
 
+use App\Livewire\Auth\ForgotPassword;
 use App\Livewire\Auth\Login;
 use App\Livewire\Auth\Register;
+use App\Livewire\Auth\ResetPassword;
 use App\Livewire\Dashboard;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
@@ -23,7 +25,7 @@ Route::middleware('auth')->group(function () {
 });
 
 
-Route::get('/login', Login::class)->name('login');
+Route::get('/login', Login::class)->middleware('guest')->name('login');
 Route::get('/register', Register::class)->name('register');
 
 
@@ -35,3 +37,8 @@ Route::post('/logout', function() {
 
     return redirect()->route('login');
 })->middleware('auth')->name('logout');
+
+
+Route::get('/forgot-password', ForgotPassword::class)->middleware('guest')->name('password.request');
+
+Route::get('/forgot-password/{token}', ResetPassword::class)->middleware('guest')->name('password.reset');
