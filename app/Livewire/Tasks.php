@@ -16,6 +16,15 @@ class Tasks extends Component
     public string $priority = 'medium';
     public ?string $due_date = null;
 
+    public ?int $editingTaskId = null;
+
+    public string $editTitle = '';
+    public string $editDescription = '';
+    public string $editPriority = 'medium';
+    public ?string $editDueDate = null;
+    public ?int $editCategoryId = null;
+
+
     public function createTask(): void
     {
         $this->validate([
@@ -83,6 +92,65 @@ class Tasks extends Component
 
         $this->dispatch('toast', type: 'success', message: 'Task deleted successfully.');
     }
+
+
+    public function editTask(int $taskId): void
+    {
+        
+        $task = Task::where('user_id', Auth::id())
+            ->findOrFail($taskId);
+
+        $this->editingTaskId = $task->id;
+        $this->editTitle = $task->title;
+        $this->editDescription = $task->description ?? '';
+        $this->editPriority = $task->priority;
+        $this->editDueDate = $task->due_date?->format('Y-m-d');
+        $this->editCategoryId = $task->category_id;
+
+        $this->dispatch('open-edit-task-modal');
+    }
+
+
+    public function updateTask(): void
+    {
+        
+        $this->validate([
+            'editTitle' => ['required', 'string', 'max:255'],
+            'editDescription' => ['nullable', 'string'],
+            'editPriority' => ['required', 'in:low,medium,high'],
+            'editDueDate' => ['nullable', 'date'],
+            'editCategoryId' => ['nullable', 'integer', 'exists:categories,id'],
+        ]);
+
+        $task = Task::where('user_id', Auth::id())
+            ->findOrFail($this->editingTaskId);
+
+        $task->update([
+            'title' => $this->editTitle,
+            'description' => $this->editDescription,
+            'priority' => $this->editPriority,
+            'due_date' => $this->editDueDate,
+            'category_id' => $this->editCategoryId,
+        ]);
+
+        $this->reset([
+            'editingTaskId',
+            'editTitle',
+            'editDescription',
+            'editDueDate',
+            'editCategoryId',
+        ]);
+
+        $this->editPriority = 'medium';
+
+        $this->dispatch('close-edit-task-modal');
+
+        $this->dispatch('toast', [
+            'message' => 'Task updated successfully.',
+            'type' => 'success',
+        ]);
+    }
+
 
     public function render()
     {
