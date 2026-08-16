@@ -79,16 +79,16 @@
 
 
                     {{-- Complete Button --}}
-                    <button type="button"
-                        class="mt-0.5 grid h-6 w-6 shrink-0 place-items-center rounded-full border-2 border-slate-300 text-transparent transition-all duration-200 hover:border-indigo-500 hover:bg-indigo-500 hover:text-white dark:border-slate-600 dark:hover:border-indigo-400 dark:hover:bg-indigo-500">
-
-                        <svg class="h-3.5 w-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                            stroke-width="3">
-
+                    <button type="button" wire:click="toggleTask({{ $task->id }})" wire:loading.attr="disabled"
+                        wire:target="toggleTask({{ $task->id }})"
+                        class="mt-0.5 grid h-6 w-6 shrink-0 place-items-center rounded-full border-2 transition-all duration-200
+        {{ $task->status === 'completed'
+            ? 'border-emerald-500 bg-emerald-500 text-white'
+            : 'border-slate-300 text-transparent hover:border-indigo-500 hover:bg-indigo-500 hover:text-white dark:border-slate-600 dark:hover:border-indigo-400 dark:hover:bg-indigo-500' }}">
+                        <svg class="h-3.5 w-3.5 transition-transform duration-200 {{ $task->status === 'completed' ? 'scale-100' : 'scale-75' }}"
+                            viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3">
                             <path d="m5 12 4 4L19 6" stroke-linecap="round" stroke-linejoin="round" />
-
                         </svg>
-
                     </button>
 
 
@@ -164,6 +164,30 @@
 
                             </span>
 
+                            {{-- completed at --}}
+                            @if ($task->status == 'completed')
+                                {{-- Separator --}}
+                                <span class="text-slate-200 dark:text-slate-700">
+                                    •
+                                </span>
+                                <span
+                                    class="inline-flex items-center gap-1.5 text-xs text-slate-400 dark:text-slate-500">
+
+                                    <svg class="h-3.5 w-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                        stroke-width="1.8">
+
+                                        <rect x="3" y="4" width="18" height="17" rx="2" />
+
+                                        <path d="M16 2v4M8 2v4M3 10h18" stroke-linecap="round" />
+
+                                    </svg>
+
+                                    @if ($task->completed_at)
+                                        completed at : {{ $task->completed_at->format('Y-m-d  H:i:s') }}
+                                    @endif
+
+                                </span>
+                            @endif
 
                             {{-- Separator --}}
                             <span class="text-slate-200 dark:text-slate-700">
@@ -321,7 +345,7 @@
             x-transition:leave-start="opacity-100 translate-y-0 scale-100"
             x-transition:leave-end="opacity-0 translate-y-4 scale-95" @click.outside="showModal = false"
             class="relative w-full max-w-lg rounded-3xl border border-slate-200 bg-white p-6 shadow-2xl dark:border-slate-800 dark:bg-slate-900">
-    
+
             <div @click.outside="showModal = false"
                 class="w-full max-w-lg rounded-3xl border border-slate-200 bg-white p-6 shadow-2xl dark:border-slate-800 dark:bg-slate-900">
                 <div class="mb-6 flex items-start justify-between">

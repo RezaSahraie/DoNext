@@ -49,12 +49,45 @@ class Tasks extends Component
         session()->flash('success', 'Task created successfully.');
     }
 
+    public function toggleTask(int $taskId): void
+    {
+        $task = Task::where('id', $taskId)->where('user_id', auth()->id())->firstOrFail();
+
+        if ($task->status === 'completed') {
+            $task->update([
+                'status' => 'pending',
+                'completed_at' => null,
+            ]);
+
+            $this->dispatch('toast', type: 'success', message: 'Task marked as pending.');
+
+            return;
+        }
+
+        $task->update(['status' => 'completed', 'completed_at' => now()]);
+        $this->dispatch('toast', type: 'success', message: 'Task completed successfully.');
+    }
+
     public function render()
     {
+        $tasks = Task::where('user_id', auth()->id())
+            ->orderByRaw("
+        CASE
+            WHEN status = 'completed' THEN 1
+            ELSE 0
+        END
+        ")
+            ->orderByRaw("
+        CASE
+            WHEN priority = 'high' THEN 1
+            WHEN priority = 'medium' THEN 2
+            WHEN priority = 'low' THEN 3
+            ELSE 4
+        END
+        ")->orderBy('due_date', 'asc')->get();
+
         return view('livewire.tasks', [
-            'tasks' => Task::where('user_id', auth()->id())
-                ->orderBy('due_date', 'asc')
-                ->get(),
+            'tasks' => $tasks,
         ]);
     }
 }
