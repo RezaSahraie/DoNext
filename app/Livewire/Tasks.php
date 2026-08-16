@@ -3,7 +3,9 @@
 namespace App\Livewire;
 
 use App\Models\Task;
+use Illuminate\Support\Facades\Auth;
 use Livewire\Attributes\Layout;
+use Livewire\Attributes\On;
 use Livewire\Component;
 
 #[Layout('layouts.app')]
@@ -24,7 +26,7 @@ class Tasks extends Component
         ]);
 
         Task::create([
-            'user_id' => auth()->id(),
+            'user_id' => Auth::id(),
             'title' => $this->title,
             'description' => $this->description,
             'priority' => $this->priority,
@@ -51,7 +53,7 @@ class Tasks extends Component
 
     public function toggleTask(int $taskId): void
     {
-        $task = Task::where('id', $taskId)->where('user_id', auth()->id())->firstOrFail();
+        $task = Task::where('id', $taskId)->where('user_id', Auth::id())->firstOrFail();
 
         if ($task->status === 'completed') {
             $task->update([
@@ -68,9 +70,23 @@ class Tasks extends Component
         $this->dispatch('toast', type: 'success', message: 'Task completed successfully.');
     }
 
+    #[On('delete-task')]
+    public function confirmDeleteTask(int $taskId): void
+    {
+        $this->deleteTask($taskId);
+    }
+    public function deleteTask(int $taskId): void
+    {
+        $task = Task::where('id', $taskId)->where('user_id', Auth::id())->firstOrFail();
+
+        $task->delete();
+
+        $this->dispatch('toast', type: 'success', message: 'Task deleted successfully.');
+    }
+
     public function render()
     {
-        $tasks = Task::where('user_id', auth()->id())
+        $tasks = Task::where('user_id', Auth::id())
             ->orderByRaw("
         CASE
             WHEN status = 'completed' THEN 1
