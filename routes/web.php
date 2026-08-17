@@ -4,6 +4,7 @@ use App\Livewire\Auth\ForgotPassword;
 use App\Livewire\Auth\Login;
 use App\Livewire\Auth\Register;
 use App\Livewire\Auth\ResetPassword;
+use App\Livewire\Categories;
 use App\Livewire\Dashboard;
 use App\Livewire\Tasks;
 use Illuminate\Support\Facades\Auth;
@@ -18,7 +19,7 @@ Route::middleware('auth')->group(function () {
     // UI-only pages. Backend logic will be added later.
     Route::get('/tasks', Tasks::class)->name('tasks');
     Route::view('/calendar', 'calendar')->name('calendar');
-    Route::view('/categories', 'categories')->name('categories');
+    Route::get('/categories', Categories::class)->name('categories');
     Route::view('/statistics', 'statistics')->name('statistics');
     Route::view('/task-details', 'task-details')->name('task-details');
     Route::view('/profile', 'profile')->name('profile');
