@@ -11,6 +11,11 @@ use Livewire\Component;
 #[Layout('layouts.app')]
 class Tasks extends Component
 {
+    /**
+     * ======================
+     * properties
+     * ======================
+     */
     public string $title = '';
     public string $description = '';
     public string $priority = 'medium';
@@ -24,16 +29,25 @@ class Tasks extends Component
     public ?string $editDueDate = null;
     public ?int $editCategoryId = null;
 
+    public string $search = '';
+    public string $filter = 'all';
+
+    /**
+     * =====================
+     * Create Task
+     * =====================
+     */
 
     public function createTask(): void
     {
+        //validating inputs
         $this->validate([
             'title' => ['required', 'string', 'max:255'],
             'description' => ['nullable', 'string'],
             'priority' => ['required', 'in:low,medium,high'],
             'due_date' => ['nullable', 'date'],
         ]);
-
+        //Creating task
         Task::create([
             'user_id' => Auth::id(),
             'title' => $this->title,
@@ -42,7 +56,7 @@ class Tasks extends Component
             'due_date' => $this->due_date,
             'status' => 'pending',
         ]);
-
+        //reseting inputs
         $this->reset([
             'title',
             'description',
@@ -60,11 +74,18 @@ class Tasks extends Component
         session()->flash('success', 'Task created successfully.');
     }
 
+    /**
+     * ==================
+     * Changing status of Task
+     * ==================
+     */
     public function toggleTask(int $taskId): void
     {
+        //finding task
         $task = Task::where('id', $taskId)->where('user_id', Auth::id())->firstOrFail();
 
         if ($task->status === 'completed') {
+            //changing completed status to pending status
             $task->update([
                 'status' => 'pending',
                 'completed_at' => null,
@@ -74,16 +95,22 @@ class Tasks extends Component
 
             return;
         }
-
+        //changing pending status to completed status
         $task->update(['status' => 'completed', 'completed_at' => now()]);
         $this->dispatch('toast', type: 'success', message: 'Task completed successfully.');
     }
 
+    /**
+     * ================
+     * Deleting Task
+     * ================
+     */
     #[On('delete-task')]
     public function confirmDeleteTask(int $taskId): void
     {
         $this->deleteTask($taskId);
     }
+
     public function deleteTask(int $taskId): void
     {
         $task = Task::where('id', $taskId)->where('user_id', Auth::id())->firstOrFail();
@@ -93,10 +120,14 @@ class Tasks extends Component
         $this->dispatch('toast', type: 'success', message: 'Task deleted successfully.');
     }
 
-
+    /**
+     * ===============
+     * finding Task for edit form
+     * ===============
+     */
     public function editTask(int $taskId): void
     {
-        
+
         $task = Task::where('user_id', Auth::id())
             ->findOrFail($taskId);
 
@@ -110,10 +141,14 @@ class Tasks extends Component
         $this->dispatch('open-edit-task-modal');
     }
 
-
+    /**
+     * =================
+     * Editing Task
+     * =================
+     */
     public function updateTask(): void
     {
-        
+        //validating inputs
         $this->validate([
             'editTitle' => ['required', 'string', 'max:255'],
             'editDescription' => ['nullable', 'string'],
@@ -121,10 +156,10 @@ class Tasks extends Component
             'editDueDate' => ['nullable', 'date'],
             'editCategoryId' => ['nullable', 'integer', 'exists:categories,id'],
         ]);
-
+        //finding task
         $task = Task::where('user_id', Auth::id())
             ->findOrFail($this->editingTaskId);
-
+        //updating task & saving new data
         $task->update([
             'title' => $this->editTitle,
             'description' => $this->editDescription,
@@ -132,7 +167,7 @@ class Tasks extends Component
             'due_date' => $this->editDueDate,
             'category_id' => $this->editCategoryId,
         ]);
-
+        //reseting inputs
         $this->reset([
             'editingTaskId',
             'editTitle',
@@ -151,10 +186,33 @@ class Tasks extends Component
         ]);
     }
 
-
+    /**
+     * ==============
+     * render
+     * ==============
+     */
     public function render()
     {
-        $tasks = Task::where('user_id', Auth::id())
+        //Creating query of user's tasks
+        $query = Task::query()->where('user_id', Auth::id())->with('category');
+
+        //search
+        if ($this->search !== '') {
+            $query->where(function ($query) {
+                $query->where('title', 'like', '%' . $this->search . '%')
+                    ->orWhere('description', 'like', '%' . $this->search . '%');
+            });
+        }
+
+        // Filter
+        match ($this->filter) {
+            'pending', 'completed' => $query->where('status', $this->filter),
+            'today' => $query->whereDate('due_date', today()),
+            default => null,
+        };
+
+        //finding tasks of user & sorting by status,priority and due_date
+        $tasks = $query
             ->orderByRaw("
         CASE
             WHEN status = 'completed' THEN 1

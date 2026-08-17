@@ -53,16 +53,15 @@
                     </svg>
                 </span>
 
-                <input x-model="search" type="search" placeholder="جستجوی کارها..."
-                    class="h-11 w-full rounded-xl border border-slate-200 bg-slate-50 ps-11 pe-4 text-sm outline-none transition placeholder:text-slate-400 focus:border-indigo-400 focus:ring-4 focus:ring-indigo-500/10 dark:border-slate-700 dark:bg-slate-800 dark:text-white dark:focus:border-indigo-500">
-
+                <input wire:model.live.debounce.300ms="search" type="search" placeholder="جستجوی کارها..."
+                    class="h-11 w-full rounded-xl border border-slate-200 bg-slate-50 ps-11 pe-4 text-sm outline-none transition placeholder:text-slate-400 focus:border-indigo-400 focus:ring-4 focus:ring-indigo-500/10 dark:border-slate-700 dark:bg-slate-800 dark:focus:border-indigo-500">
             </div>
 
 
             {{-- Filters --}}
             <div class="flex flex-wrap gap-2">
 
-                <button type="button" @click="filter = 'all'"
+                <button type="button" @click="filter = 'all'" wire:click="$set('filter', 'all')"
                     :class="filter === 'all'
                         ?
                         'bg-indigo-600 text-white shadow-sm' :
@@ -71,7 +70,7 @@
                     همه
                 </button>
 
-                <button type="button" @click="filter = 'today'"
+                <button type="button" @click="filter = 'today'" wire:click="$set('filter', 'today')"
                     :class="filter === 'today'
                         ?
                         'bg-indigo-600 text-white shadow-sm' :
@@ -80,7 +79,7 @@
                     امروز
                 </button>
 
-                <button type="button" @click="filter = 'pending'"
+                <button type="button" @click="filter = 'pending'" wire:click="$set('filter', 'pending')"
                     :class="filter === 'pending'
                         ?
                         'bg-indigo-600 text-white shadow-sm' :
@@ -89,7 +88,7 @@
                     در انتظار
                 </button>
 
-                <button type="button" @click="filter = 'completed'"
+                <button type="button" @click="filter = 'completed'" wire:click="$set('filter', 'completed')"
                     :class="filter === 'completed'
                         ?
                         'bg-indigo-600 text-white shadow-sm' :
