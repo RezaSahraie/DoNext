@@ -94,7 +94,7 @@ class Profile extends Component
             'email' => $validated['email'],
         ]);
 
-        $editMode = false;
+        $this->editMode = false;
 
         session()->flash('success', 'Profile updated successfully.');
         $this->dispatch('toast',
