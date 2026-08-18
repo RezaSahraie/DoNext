@@ -6,6 +6,7 @@ use App\Livewire\Auth\Register;
 use App\Livewire\Auth\ResetPassword;
 use App\Livewire\Categories;
 use App\Livewire\Dashboard;
+use App\Livewire\Profile;
 use App\Livewire\Tasks;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
@@ -22,7 +23,7 @@ Route::middleware('auth')->group(function () {
     Route::get('/categories', Categories::class)->name('categories');
     Route::view('/statistics', 'statistics')->name('statistics');
     Route::view('/task-details', 'task-details')->name('task-details');
-    Route::view('/profile', 'profile')->name('profile');
+    Route::get('/profile', Profile::class)->name('profile');
     Route::view('/settings', 'settings')->name('settings');
 });
 
