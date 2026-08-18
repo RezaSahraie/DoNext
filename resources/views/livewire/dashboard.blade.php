@@ -174,11 +174,66 @@
             </div>
         </section>
 
-        {{-- Progress --}}
-        <section class="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm dark:border-slate-800 dark:bg-slate-900">
-            <div class="flex items-start justify-between"><div><h3 class="font-black"><span x-show="language==='fa'">پیشرفت هفتگی</span><span x-show="language==='en'">Weekly progress</span></h3><p class="mt-1 text-xs text-slate-400"><span x-show="language==='fa'">عملکرد این هفته</span><span x-show="language==='en'">Your performance this week</span></p></div><span class="rounded-full bg-emerald-50 px-2.5 py-1 text-xs font-bold text-emerald-600 dark:bg-emerald-500/10 dark:text-emerald-400">+18%</span></div>
-            <div class="my-7 flex items-center gap-5"><div class="relative grid h-32 w-32 shrink-0 place-items-center rounded-full" style="background:conic-gradient(#4f46e5 0 67%,#e2e8f0 67% 100%)"><div class="grid h-24 w-24 place-items-center rounded-full bg-white dark:bg-slate-900"><span class="text-2xl font-black">67%</span></div></div><div><p class="text-sm font-bold"><span x-show="language==='fa'">۱۶ از ۲۴ کار</span><span x-show="language==='en'">16 of 24 tasks</span></p><p class="mt-2 text-xs leading-5 text-slate-400"><span x-show="language==='fa'">عملکردت بهتر از هفته قبل بوده.</span><span x-show="language==='en'">You're doing better than last week.</span></p></div></div>
-            <div class="flex h-24 items-end gap-2">@foreach([45,65,80,55,90,70,35] as $n)<div class="flex h-full flex-1 flex-col justify-end gap-2"><div class="rounded-t-lg bg-indigo-500/70" style="height:{{$n}}%"></div><span class="text-center text-[9px] text-slate-400">{{['ش','ی','د','س','چ','پ','ج'][$loop->index]}}</span></div>@endforeach</div>
+        {{-- Weekly progress --}}
+        <section
+            class="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm dark:border-slate-800 dark:bg-slate-900">
+
+            <div class="flex items-start justify-between">
+                <div>
+                    <h3 class="font-black">
+                        <span x-show="language==='fa'">پیشرفت هفتگی</span>
+                        <span x-show="language==='en'">Weekly progress</span>
+                    </h3>
+                    <p class="mt-1 text-xs text-slate-400">
+                        <span x-show="language==='fa'">عملکرد این هفته</span>
+                        <span x-show="language==='en'">Your performance this week</span>
+                    </p>
+                </div>
+
+                <span
+                    class="rounded-full bg-emerald-50 px-2.5 py-1 text-xs font-bold text-emerald-600 dark:bg-emerald-500/10 dark:text-emerald-400">
+                    {{ $weeklyRate }}%
+                </span>
+            </div>
+
+            <div class="my-7 flex items-center gap-5">
+                {{-- Circle progress --}}
+                <div class="relative grid h-32 w-32 shrink-0 place-items-center rounded-full"
+                    style="background: conic-gradient(#4f46e5 0 {{ $weeklyRate }}%, #e2e8f0 {{ $weeklyRate }}% 100%)">
+                    <div class="grid h-24 w-24 place-items-center rounded-full bg-white dark:bg-slate-900">
+                        <span class="text-2xl font-black">{{ $weeklyRate }}%</span>
+                    </div>
+                </div>
+
+                <div>
+                    <p class="text-sm font-bold">
+                        <span x-show="language==='fa'">{{ $weeklyCompleted }} از {{ $weeklyTotal }} کار</span>
+                        <span x-show="language==='en'">{{ $weeklyCompleted }} of {{ $weeklyTotal }} tasks</span>
+                    </p>
+                    <p class="mt-2 text-xs leading-5 text-slate-400">
+                        <span x-show="language==='fa'">بر اساس کارهای دارای موعد در این هفته</span>
+                        <span x-show="language==='en'">Based on tasks due this week</span>
+                    </p>
+                </div>
+            </div>
+
+            {{-- Bar chart: completed tasks per day --}}
+            <div class="flex h-24 items-end gap-2">
+                @foreach ($weeklyBars as $index => $count)
+                    @php
+                        $height = (int) round(($count / $maxBar) * 100);
+                        $labels = ['ش', 'ی', 'د', 'س', 'چ', 'پ', 'ج'];
+                    @endphp
+
+                    <div class="flex h-full flex-1 flex-col justify-end gap-2">
+                        <div class="rounded-t-lg bg-indigo-500/70"
+                            style="height: {{ max($height, $count > 0 ? 8 : 4) }}%"></div>
+                        <span class="text-center text-[9px] text-slate-400">
+                            {{ $labels[$index] }}
+                        </span>
+                    </div>
+                @endforeach
+            </div>
         </section>
     </div>
 
