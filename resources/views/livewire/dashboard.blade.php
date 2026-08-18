@@ -183,10 +183,68 @@
     </div>
 
     {{-- Upcoming --}}
-    <section class="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm dark:border-slate-800 dark:bg-slate-900">
-        <div class="mb-5 flex items-center justify-between"><div><h3 class="font-black"><span x-show="language==='fa'">کارهای پیش رو</span><span x-show="language==='en'">Upcoming tasks</span></h3><p class="mt-1 text-xs text-slate-400"><span x-show="language==='fa'">برنامه روزهای آینده</span><span x-show="language==='en'">What's coming next</span></p></div><a href="{{url('/calendar')}}" class="text-xs font-bold text-indigo-600 dark:text-indigo-400"><span x-show="language==='fa'">تقویم ←</span><span x-show="language==='en'">Calendar →</span></a></div>
+    <section
+        class="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm dark:border-slate-800 dark:bg-slate-900">
+
+        <div class="mb-5 flex items-center justify-between">
+            <div>
+                <h3 class="font-black">
+                    <span x-show="language==='fa'">کارهای پیش رو</span>
+                    <span x-show="language==='en'">Upcoming tasks</span>
+                </h3>
+                <p class="mt-1 text-xs text-slate-400">
+                    <span x-show="language==='fa'">برنامه روزهای آینده</span>
+                    <span x-show="language==='en'">What's coming next</span>
+                </p>
+            </div>
+
+            <a href="{{ url('/calendar') }}"
+                class="text-xs font-bold text-indigo-600 dark:text-indigo-400">
+                <span x-show="language==='fa'">تقویم ←</span>
+                <span x-show="language==='en'">Calendar →</span>
+            </a>
+        </div>
+
         <div class="grid gap-3 md:grid-cols-3">
-            @foreach([['شنبه','Saturday','طراحی UI','UI Design','فردا','Tomorrow'],['یکشنبه','Sunday','مرور پروژه','Project review','پس‌فردا','In 2 days'],['دوشنبه','Monday','انتشار نسخه اول','First release','۳ روز دیگر','In 3 days']] as $u)<div class="rounded-2xl border border-slate-100 bg-slate-50 p-4 dark:border-slate-800 dark:bg-slate-800/50"><div class="flex items-center justify-between"><span class="text-xs font-bold text-indigo-600 dark:text-indigo-400"><span x-show="language==='fa'">{{$u[0]}}</span><span x-show="language==='en'">{{$u[1]}}</span></span><span class="text-[10px] text-slate-400"><span x-show="language==='fa'">{{$u[4]}}</span><span x-show="language==='en'">{{$u[5]}}</span></span></div><h4 class="mt-3 text-sm font-bold"><span x-show="language==='fa'">{{$u[2]}}</span><span x-show="language==='en'">{{$u[3]}}</span></h4></div>@endforeach
+
+            @forelse ($upcomingTasks as $task)
+                <div
+                    class="rounded-2xl border border-slate-100 bg-slate-50 p-4 dark:border-slate-800 dark:bg-slate-800/50">
+
+                    <div class="flex items-center justify-between gap-2">
+                        <span class="text-xs font-bold text-indigo-600 dark:text-indigo-400">
+                            {{ $task->due_date->format('Y-m-d') }}
+                        </span>
+
+                        <span class="text-[10px] text-slate-400">
+                            {{ $task->due_date->diffForHumans() }}
+                        </span>
+                    </div>
+
+                    <h4 class="mt-3 truncate text-sm font-bold text-slate-900 dark:text-white">
+                        {{ $task->title }}
+                    </h4>
+
+                    @if ($task->category)
+                        <p class="mt-1 truncate text-xs text-slate-400">
+                            {{ $task->category->name }}
+                        </p>
+                    @endif
+
+                </div>
+            @empty
+                <div class="md:col-span-3 rounded-2xl border border-dashed border-slate-200 px-4 py-8 text-center dark:border-slate-700">
+                    <p class="text-sm font-bold text-slate-700 dark:text-slate-200">
+                        <span x-show="language==='fa'">کار پیش‌رویی نداری</span>
+                        <span x-show="language==='en'">No upcoming tasks</span>
+                    </p>
+                    <p class="mt-1 text-xs text-slate-400">
+                        <span x-show="language==='fa'">برای روزهای بعد یک کار با تاریخ بساز</span>
+                        <span x-show="language==='en'">Create a task with a future due date</span>
+                    </p>
+                </div>
+            @endforelse
+
         </div>
     </section>
 </div>

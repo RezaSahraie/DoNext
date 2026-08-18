@@ -44,6 +44,23 @@ class Dashboard extends Component
             ->where('status', '!=', 'completed')
             ->count();
 
+        // Upcoming tasks: due date after today, not completed
+        $upcomingTasks = $user->tasks()
+            ->where('status', '!=', 'completed')
+            ->whereDate('due_date', '>', today())
+            ->with('category')
+            ->orderBy('due_date')
+            ->orderByRaw("
+                CASE
+                    WHEN priority = 'high' THEN 1
+                    WHEN priority = 'medium' THEN 2
+                    WHEN priority = 'low' THEN 3
+                    ELSE 4
+                END
+            ")
+            ->limit(3)
+            ->get();
+
         return view('livewire.dashboard',[
             'user' => $user,
             'totalTasks' => $totalTasks,
@@ -52,6 +69,7 @@ class Dashboard extends Component
             'completionRate' => $completionRate,
             'todaysTaskList' => $todaysTaskList,
             'todayRemaining' => $todayRemaining,
+            'upcomingTasks' => $upcomingTasks,
         ]);
     }
 }
