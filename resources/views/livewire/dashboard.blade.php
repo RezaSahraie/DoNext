@@ -75,21 +75,102 @@
     </section>
 
     <div class="grid gap-6 xl:grid-cols-3">
-        {{-- Tasks --}}
-        <section class="overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm xl:col-span-2 dark:border-slate-800 dark:bg-slate-900">
-            <div class="flex items-center justify-between border-b border-slate-100 px-5 py-5 dark:border-slate-800"><div><h3 class="font-black"><span x-show="language==='fa'">کارهای امروز</span><span x-show="language==='en'">Today's tasks</span></h3><p class="mt-1 text-xs text-slate-400"><span x-show="language==='fa'">۳ کار باقی مانده</span><span x-show="language==='en'">3 tasks remaining</span></p></div><a href="{{url('/tasks')}}" class="text-xs font-bold text-indigo-600 dark:text-indigo-400"><span x-show="language==='fa'">مشاهده همه ←</span><span x-show="language==='en'">View all →</span></a></div>
-            <div class="divide-y divide-slate-100 dark:divide-slate-800">
-                @foreach([
-                    ['تکمیل پروژه Laravel','Finish Laravel project','۱۸:۰۰','High','زیاد','rose'],
-                    ['مطالعه Livewire','Study Livewire','۲۰:۰۰','Medium','متوسط','amber'],
-                    ['طراحی داشبورد DoNext','Design DoNext dashboard','فردا · ۱۰:۰۰','Low','کم','emerald']
-                ] as $task)
-                <div class="flex items-center gap-4 px-5 py-4 transition hover:bg-slate-50 dark:hover:bg-slate-800/50" x-data="{checked:false}">
-                    <button @click="checked=!checked" :class="checked ? 'border-indigo-500 bg-indigo-500 text-white' : 'border-slate-300 text-transparent dark:border-slate-600'" class="grid h-6 w-6 shrink-0 place-items-center rounded-full border-2 transition">✓</button>
-                    <div class="min-w-0 flex-1"><h4 :class="checked && 'line-through text-slate-400'" class="truncate text-sm font-bold"><span x-show="language==='fa'">{{$task[0]}}</span><span x-show="language==='en'">{{$task[1]}}</span></h4><p class="mt-1 text-xs text-slate-400">{{$task[2]}}</p></div>
-                    <span class="hidden rounded-full bg-{{$task[5]}}-50 px-2.5 py-1 text-[10px] font-bold text-{{$task[5]}}-600 dark:bg-{{$task[5]}}-500/10 dark:text-{{$task[5]}}-400 sm:block"><span x-show="language==='fa'">{{$task[4]}}</span><span x-show="language==='en'">{{$task[3]}}</span></span><button class="text-slate-300 hover:text-slate-600 dark:hover:text-white">⋮</button>
+        {{-- Today's tasks --}}
+        <section
+            class="overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm xl:col-span-2 dark:border-slate-800 dark:bg-slate-900">
+
+            <div class="flex items-center justify-between border-b border-slate-100 px-5 py-5 dark:border-slate-800">
+                <div>
+                    <h3 class="font-black">
+                        <span x-show="language==='fa'">کارهای امروز</span>
+                        <span x-show="language==='en'">Today's tasks</span>
+                    </h3>
+                    <p class="mt-1 text-xs text-slate-400">
+                        <span x-show="language==='fa'">{{ $todayRemaining }} کار باقی مانده</span>
+                        <span x-show="language==='en'">{{ $todayRemaining }} tasks remaining</span>
+                    </p>
                 </div>
-                @endforeach
+
+                <a href="{{ url('/tasks') }}"
+                    class="text-xs font-bold text-indigo-600 dark:text-indigo-400">
+                    <span x-show="language==='fa'">مشاهده همه ←</span>
+                    <span x-show="language==='en'">View all →</span>
+                </a>
+            </div>
+
+            <div class="divide-y divide-slate-100 dark:divide-slate-800">
+
+                @forelse ($todaysTaskList as $task)
+                    <div class="flex items-center gap-4 px-5 py-4 transition hover:bg-slate-50 dark:hover:bg-slate-800/50">
+
+                        {{-- Status indicator --}}
+                        <div
+                            class="grid h-6 w-6 shrink-0 place-items-center rounded-full border-2
+                            {{ $task->status === 'completed'
+                                ? 'border-emerald-500 bg-emerald-500 text-white'
+                                : 'border-slate-300 text-transparent dark:border-slate-600' }}">
+                            ✓
+                        </div>
+
+                        <div class="min-w-0 flex-1">
+                            <h4 @class([
+                                'truncate text-sm font-bold',
+                                'text-slate-400 line-through' => $task->status === 'completed',
+                                'text-slate-900 dark:text-white' => $task->status !== 'completed',
+                            ])>
+                                {{ $task->title }}
+                            </h4>
+
+                            <p class="mt-1 text-xs text-slate-400">
+                                @if ($task->due_date)
+                                    {{ $task->due_date }}
+                                @else
+                                    —
+                                @endif
+
+                                @if ($task->category)
+                                    · {{ $task->category->name }}
+                                @endif
+                            </p>
+                        </div>
+
+                        {{-- Priority badge --}}
+                        @if ($task->priority === 'high')
+                            <span
+                                class="hidden rounded-full bg-rose-50 px-2.5 py-1 text-[10px] font-bold text-rose-600 dark:bg-rose-500/10 dark:text-rose-400 sm:block">
+                                High
+                            </span>
+                        @elseif ($task->priority === 'medium')
+                            <span
+                                class="hidden rounded-full bg-amber-50 px-2.5 py-1 text-[10px] font-bold text-amber-600 dark:bg-amber-500/10 dark:text-amber-400 sm:block">
+                                Medium
+                            </span>
+                        @else
+                            <span
+                                class="hidden rounded-full bg-emerald-50 px-2.5 py-1 text-[10px] font-bold text-emerald-600 dark:bg-emerald-500/10 dark:text-emerald-400 sm:block">
+                                Low
+                            </span>
+                        @endif
+
+                    </div>
+                @empty
+                    <div class="px-5 py-10 text-center">
+                        <p class="text-sm font-bold text-slate-700 dark:text-slate-200">
+                            <span x-show="language==='fa'">کاری برای امروز نداری</span>
+                            <span x-show="language==='en'">No tasks for today</span>
+                        </p>
+                        <p class="mt-1 text-xs text-slate-400">
+                            <span x-show="language==='fa'">یک کار با تاریخ امروز بساز</span>
+                            <span x-show="language==='en'">Create a task with today's due date</span>
+                        </p>
+                        <a href="{{ url('/tasks') }}"
+                            class="mt-4 inline-flex rounded-xl bg-indigo-600 px-4 py-2 text-xs font-bold text-white hover:bg-indigo-700">
+                            <span x-show="language==='fa'">رفتن به کارها</span>
+                            <span x-show="language==='en'">Go to tasks</span>
+                        </a>
+                    </div>
+                @endforelse
+
             </div>
         </section>
 
