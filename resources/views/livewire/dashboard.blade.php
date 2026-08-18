@@ -3,7 +3,10 @@
     <section class="relative overflow-hidden rounded-3xl bg-gradient-to-br from-indigo-600 via-violet-600 to-indigo-800 p-6 text-white shadow-xl shadow-indigo-500/10 sm:p-8">
         <div class="relative z-10 max-w-2xl">
             <span class="inline-flex rounded-full bg-white/10 px-3 py-1 text-xs font-bold ring-1 ring-white/15"><span x-show="language==='fa'">شنبه، ۱۸ مرداد ۱۴۰۵</span><span x-show="language==='en'">Saturday, August 9, 2026</span></span>
-            <h2 class="mt-4 text-3xl font-black tracking-tight sm:text-4xl"><span x-show="language==='fa'">عصر بخیر، رضا 👋</span><span x-show="language==='en'">Good evening, Reza 👋</span></h2>
+            <h2 class="mt-4 text-3xl font-black tracking-tight sm:text-4xl">
+                <span x-show="language==='fa'">عصر بخیر، {{ $user->name }} 👋</span>
+                <span x-show="language==='en'">Good evening, {{ $user->name }} 👋</span>
+            </h2>
             <p class="mt-3 max-w-xl text-sm leading-7 text-indigo-100"><span x-show="language==='fa'">امروز هم یک قدم دیگر به هدف‌هایت نزدیک شو. کارهای مهمت را انجام بده و روزت را با موفقیت تمام کن.</span><span x-show="language==='en'">Take another step toward your goals today. Finish what matters and end your day with a win.</span></p>
             <a href="{{ url('/tasks') }}" class="mt-6 inline-flex items-center gap-2 rounded-xl bg-white px-5 py-3 text-sm font-black text-indigo-700 shadow-lg transition hover:-translate-y-0.5"><span class="text-lg">+</span><span x-show="language==='fa'">کار جدید</span><span x-show="language==='en'">New task</span></a>
         </div>
@@ -11,18 +14,64 @@
     </section>
 
     {{-- Stats --}}
-    <section class="grid gap-4 sm:grid-cols-2 xl:grid-cols-4">
-        @foreach([
-            ['✓','indigo','24','+12%','کل کارها','Total tasks'],
-            ['✓','emerald','16','+8%','انجام شده','Completed'],
-            ['◷','amber','8','Today','کارهای امروز','Today'],
-            ['◒','violet','67%','This week','نرخ تکمیل','Completion rate']
-        ] as $s)
-        <div class="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm transition hover:-translate-y-1 hover:shadow-lg dark:border-slate-800 dark:bg-slate-900">
-            <div class="mb-5 flex items-start justify-between"><div class="grid h-11 w-11 place-items-center rounded-xl bg-{{$s[1]}}-50 text-xl text-{{$s[1]}}-600 dark:bg-{{$s[1]}}-500/10 dark:text-{{$s[1]}}-400">{{$s[0]}}</div><span class="rounded-full bg-slate-100 px-2.5 py-1 text-[10px] font-bold text-slate-500 dark:bg-slate-800">{{$s[3]}}</span></div>
-            <p class="text-sm font-medium text-slate-500 dark:text-slate-400"><span x-show="language==='fa'">{{$s[4]}}</span><span x-show="language==='en'">{{$s[5]}}</span></p><h3 class="mt-1 text-3xl font-black">{{$s[2]}}</h3>
+    <section class="w-full gap-4" style="display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); width: 100%;">
+        {{-- Total --}}
+        <div class="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm dark:border-slate-800 dark:bg-slate-900" style="min-width: 0;">
+            <div class="mb-4 flex items-center justify-between">
+                <div class="grid h-11 w-11 place-items-center rounded-xl bg-indigo-50 text-indigo-600 dark:bg-indigo-500/10 dark:text-indigo-400">
+                    ✓
+                </div>
+                <span class="rounded-full bg-slate-100 px-2.5 py-1 text-[10px] font-bold text-slate-500 dark:bg-slate-800">
+                    All
+                </span>
+            </div>
+            <p class="text-sm font-medium text-slate-500 dark:text-slate-400">Total tasks</p>
+            <p class="mt-1 text-3xl font-black text-slate-900 dark:text-white">{{ $totalTasks }}</p>
         </div>
-        @endforeach
+
+        {{-- Completed --}}
+        <div class="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm dark:border-slate-800 dark:bg-slate-900" style="min-width: 0;">
+            <div class="mb-4 flex items-center justify-between">
+                <div class="grid h-11 w-11 place-items-center rounded-xl bg-emerald-50 text-emerald-600 dark:bg-emerald-500/10 dark:text-emerald-400">
+                    ✓
+                </div>
+                <span class="rounded-full bg-emerald-50 px-2.5 py-1 text-[10px] font-bold text-emerald-600 dark:bg-emerald-500/10 dark:text-emerald-400">
+                    Done
+                </span>
+            </div>
+            <p class="text-sm font-medium text-slate-500 dark:text-slate-400">Completed</p>
+            <p class="mt-1 text-3xl font-black text-emerald-600 dark:text-emerald-400">{{ $completedTasks }}</p>
+        </div>
+
+        {{-- Today --}}
+        <div class="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm dark:border-slate-800 dark:bg-slate-900" style="min-width: 0;">
+            <div class="mb-4 flex items-center justify-between">
+                <div class="grid h-11 w-11 place-items-center rounded-xl bg-amber-50 text-amber-600 dark:bg-amber-500/10 dark:text-amber-400">
+                    ◷
+                </div>
+                <span class="rounded-full bg-amber-50 px-2.5 py-1 text-[10px] font-bold text-amber-600 dark:bg-amber-500/10 dark:text-amber-400">
+                    Today
+                </span>
+            </div>
+            <p class="text-sm font-medium text-slate-500 dark:text-slate-400">Today</p>
+            <p class="mt-1 text-3xl font-black text-amber-600 dark:text-amber-400">{{ $todayTasks }}</p>
+        </div>
+
+        {{-- Rate --}}
+        <div class="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm dark:border-slate-800 dark:bg-slate-900" style="min-width: 0;">
+            <div class="mb-4 flex items-center justify-between">
+                <div class="grid h-11 w-11 place-items-center rounded-xl bg-violet-50 text-violet-600 dark:bg-violet-500/10 dark:text-violet-400">
+                    ◒
+                </div>
+                <span class="rounded-full bg-violet-50 px-2.5 py-1 text-[10px] font-bold text-violet-600 dark:bg-violet-500/10 dark:text-violet-400">
+                    Rate
+                </span>
+            </div>
+            <p class="text-sm font-medium text-slate-500 dark:text-slate-400">Completion rate</p>
+            <p class="mt-1 text-3xl font-black text-violet-600 dark:text-violet-400">
+                {{ number_format($completionRate, 2) }}%
+            </p>
+        </div>
     </section>
 
     <div class="grid gap-6 xl:grid-cols-3">
