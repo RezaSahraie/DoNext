@@ -22,10 +22,7 @@ Route::middleware('auth')->group(function () {
     Route::get('/tasks', Tasks::class)->name('tasks');
     Route::get('/calendar', Calendar::class)->name('calendar');
     Route::get('/categories', Categories::class)->name('categories');
-    Route::view('/statistics', 'statistics')->name('statistics');
-    Route::view('/task-details', 'task-details')->name('task-details');
     Route::get('/profile', Profile::class)->name('profile');
-    Route::view('/settings', 'settings')->name('settings');
 });
 
 

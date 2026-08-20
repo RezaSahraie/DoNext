@@ -41,9 +41,7 @@
                     class="absolute end-0 top-14 z-50 w-56 overflow-hidden rounded-2xl border border-slate-200 bg-white p-2 shadow-2xl dark:border-slate-800 dark:bg-slate-900">
                     <a href="{{ url('/profile') }}" @click="userMenuOpen=false"
                         class="flex items-center gap-3 rounded-xl px-3 py-2.5 text-sm font-bold hover:bg-slate-50 dark:hover:bg-slate-800">◎
-                        <span>Profile / پروفایل</span></a><a href="{{ url('/settings') }}" @click="userMenuOpen=false"
-                        class="flex items-center gap-3 rounded-xl px-3 py-2.5 text-sm font-bold hover:bg-slate-50 dark:hover:bg-slate-800">⚙
-                        <span>Settings / تنظیمات</span></a>
+                        <span>Profile / پروفایل</span></a>
                     <div class="my-1 border-t border-slate-100 dark:border-slate-800"></div>
                     <form method="POST" action="{{ route('logout') }}">
                         @csrf
@@ -79,7 +77,7 @@
     <div x-show="mobileMenu" x-cloak x-transition
         class="border-t border-slate-200 bg-white px-4 py-4 dark:border-slate-800 dark:bg-slate-950 lg:hidden">
         <nav class="grid gap-1 sm:grid-cols-2">
-            @foreach ([['/dashboard', '⌂', 'Dashboard', 'داشبورد'], ['/tasks', '✓', 'Tasks', 'کارها'], ['/calendar', '▣', 'Calendar', 'تقویم'], ['/categories', '#', 'Categories', 'دسته‌بندی‌ها'], ['/statistics', '◒', 'Statistics', 'آمار'], ['/profile', '◎', 'Profile', 'پروفایل'], ['/settings', '⚙', 'Settings', 'تنظیمات']] as $item)
+            @foreach ([['/dashboard', '⌂', 'Dashboard', 'داشبورد'], ['/tasks', '✓', 'Tasks', 'کارها'], ['/calendar', '▣', 'Calendar', 'تقویم'], ['/categories', '#', 'Categories', 'دسته‌بندی‌ها'], ['/profile', '◎', 'Profile', 'پروفایل']] as $item)
                 <a @click="mobileMenu=false" href="{{ url($item[0]) }}"
                     class="rounded-xl px-4 py-3 text-sm font-bold hover:bg-indigo-50 dark:hover:bg-indigo-500/10">{{ $item[1] }}
                     &nbsp; {{ $item[2] }} <span class="text-[10px] text-slate-400">{{ $item[3] }}</span></a>
