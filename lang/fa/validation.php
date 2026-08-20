@@ -1,0 +1,43 @@
+<?php
+
+return [
+    'required' => 'وارد کردن فیلد :attribute الزامی است.',
+    'email' => 'فیلد :attribute باید یک ایمیل معتبر باشد.',
+    'unique' => 'این :attribute قبلاً ثبت شده است.',
+    'confirmed' => 'تأییدیه :attribute با آن مطابقت ندارد.',
+    'string' => 'فیلد :attribute باید متنی باشد.',
+    'max' => [
+        'string' => 'فیلد :attribute نمی‌تواند بیشتر از :max کاراکتر باشد.',
+    ],
+    'min' => [
+        'string' => 'فیلد :attribute باید حداقل :min کاراکتر باشد.',
+    ],
+    'date' => 'فیلد :attribute باید یک تاریخ معتبر باشد.',
+    'integer' => 'فیلد :attribute باید عدد صحیح باشد.',
+    'exists' => 'مقدار انتخاب‌شده برای :attribute معتبر نیست.',
+    'in' => 'مقدار انتخاب‌شده برای :attribute معتبر نیست.',
+    'attributes' => [
+        'name' => 'نام',
+        'email' => 'ایمیل',
+        'password' => 'رمز عبور',
+        'password_confirmation' => 'تکرار رمز عبور',
+        'title' => 'عنوان کار',
+        'description' => 'توضیحات',
+        'priority' => 'اولویت',
+        'due_date' => 'موعد',
+        'category_id' => 'دسته‌بندی',
+        'editTitle' => 'عنوان کار',
+        'editDescription' => 'توضیحات',
+        'editPriority' => 'اولویت',
+        'editDueDate' => 'موعد',
+        'editCategoryId' => 'دسته‌بندی',
+        'quickTitle' => 'عنوان کار',
+        'quickDescription' => 'توضیحات',
+        'quickPriority' => 'اولویت',
+        'color' => 'رنگ',
+        'icon' => 'آیکون',
+        'editName' => 'نام دسته‌بندی',
+        'editColor' => 'رنگ',
+        'editIcon' => 'آیکون',
+    ],
+];
