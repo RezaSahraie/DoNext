@@ -1,11 +1,5 @@
 <!DOCTYPE html>
-<html lang="fa" dir="rtl" x-data="{ darkMode: localStorage.getItem('theme') === 'dark', language: localStorage.getItem('language') || 'fa' }" x-init="document.documentElement.classList.toggle('dark', darkMode);
-document.documentElement.dir = language === 'fa' ? 'rtl' : 'ltr';
-$watch('darkMode', value => { localStorage.setItem('theme', value ? 'dark' : 'light');
-    document.documentElement.classList.toggle('dark', value); });
-$watch('language', value => { localStorage.setItem('language', value);
-    document.documentElement.dir = value === 'fa' ? 'rtl' : 'ltr';
-    window.dispatchEvent(new CustomEvent('language-changed', { detail: { language: value } })); })" class="scroll-smooth">
+<html lang="fa" dir="rtl" class="scroll-smooth">
 
 <head>
     <meta charset="UTF-8">
@@ -13,36 +7,37 @@ $watch('language', value => { localStorage.setItem('language', value);
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <meta name="theme-color" content="#4f46e5">
     <title>@yield('title', 'DoNext')</title>
+
+    <script>
+        // Apply theme + language before paint to avoid flash
+        (function () {
+            const theme = localStorage.getItem('theme');
+            const isDark = theme === 'dark' || (!theme && window.matchMedia('(prefers-color-scheme: dark)').matches);
+            if (isDark) document.documentElement.classList.add('dark');
+
+            const lang = localStorage.getItem('language') || 'fa';
+            document.documentElement.lang = lang;
+            document.documentElement.dir = lang === 'fa' ? 'rtl' : 'ltr';
+        })();
+    </script>
+
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
-        tailwind.config = {
-            darkMode: 'class'
-        }
+        tailwind.config = { darkMode: 'class' }
     </script>
+
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap"
-        rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@400;500;600;700;800;900&display=swap"
-        rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+
     <style>
-        body {
-            font-family: Vazirmatn, Inter, sans-serif
-        }
-
-        [x-cloak] {
-            display: none !important
-        }
-
-        ::selection {
-            background: rgb(99 102 241/.2)
-        }
-
-        :focus-visible {
-            outline: 3px solid rgb(99 102 241/.45);
-            outline-offset: 2px
-        }
+        body { font-family: Vazirmatn, Inter, sans-serif }
+        [x-cloak] { display: none !important }
+        ::selection { background: rgb(99 102 241 / .2) }
+        :focus-visible { outline: 3px solid rgb(99 102 241 / .45); outline-offset: 2px }
     </style>
+
     <script>
         window.DoNextPairs = {
             'داشبورد': 'Dashboard',
@@ -52,7 +47,6 @@ $watch('language', value => { localStorage.setItem('language', value);
             'پروفایل': 'Profile',
             'فضای کاری': 'Workspace',
             'شخصی': 'Personal',
-            'کارها را انجام بده.': 'Get things done.',
             'پلن رایگان': 'Free Plan',
             'اعلان‌ها': 'Notifications',
             'امروز': 'Today',
@@ -92,12 +86,12 @@ $watch('language', value => { localStorage.setItem('language', value);
             'ایجاد دسته': 'Create Category',
             'اطلاعات شخصی': 'Personal Information',
             'فعالیت': 'Activity',
-            'کارهای امروز': 'Today\'s tasks',
+            'کارهای امروز': "Today's tasks",
             'مشاهده همه ←': 'View all →',
             'پیشرفت هفتگی': 'Weekly progress',
             'عملکرد این هفته': 'Your performance this week',
             'کارهای پیش رو': 'Upcoming tasks',
-            'برنامه روزهای آینده': 'What\'s coming next',
+            'برنامه روزهای آینده': "What's coming next",
             'تقویم ←': 'Calendar →',
             'برنامه‌ریزی روزها': 'Plan your days',
             'کارهای دارای موعد را روی تقویم ببین و مدیریت کن.': 'See and manage due tasks on the calendar.',
@@ -112,7 +106,7 @@ $watch('language', value => { localStorage.setItem('language', value);
             'در حال ذخیره...': 'Saving...',
             'نام شما': 'Your name',
             'کاری برای امروز نداری': 'No tasks for today',
-            'یک کار با تاریخ امروز بساز': 'Create a task with today\'s due date',
+            'یک کار با تاریخ امروز بساز': "Create a task with today's due date",
             'رفتن به کارها': 'Go to tasks',
             'کار پیش‌رویی نداری': 'No upcoming tasks',
             'برای روزهای بعد یک کار با تاریخ بساز': 'Create a task with a future due date',
@@ -131,31 +125,36 @@ $watch('language', value => { localStorage.setItem('language', value);
             'ذخیره': 'Save',
             'برگشت': 'Back'
         };
-        window.DoNextI18n = {
-            fa: {},
-            en: {}
-        };
+
+        window.DoNextI18n = { fa: {}, en: {} };
         Object.entries(DoNextPairs).forEach(([fa, en]) => {
             DoNextI18n.en[fa] = en;
             DoNextI18n.fa[en] = fa;
         });
-        (function() {
+
+        (function () {
             let translating = false;
 
             function translate() {
                 if (translating) return;
                 translating = true;
+
                 const lang = localStorage.getItem('language') || 'fa';
                 const map = DoNextI18n[lang] || {};
+
                 const walker = document.createTreeWalker(document.body, NodeFilter.SHOW_TEXT);
                 const nodes = [];
                 while (walker.nextNode()) nodes.push(walker.currentNode);
+
                 nodes.forEach(n => {
                     if (n.parentElement && ['SCRIPT', 'STYLE'].includes(n.parentElement.tagName)) return;
-                    const raw = n.nodeValue,
-                        trimmed = raw.trim();
-                    if (trimmed && map[trimmed]) n.nodeValue = raw.replace(trimmed, map[trimmed]);
+                    const raw = n.nodeValue;
+                    const trimmed = raw.trim();
+                    if (trimmed && map[trimmed]) {
+                        n.nodeValue = raw.replace(trimmed, map[trimmed]);
+                    }
                 });
+
                 document.querySelectorAll('[placeholder]').forEach(el => {
                     const key = el.dataset.i18nKey || el.getAttribute('placeholder');
                     if (map[key]) {
@@ -163,6 +162,7 @@ $watch('language', value => { localStorage.setItem('language', value);
                         el.setAttribute('placeholder', map[key]);
                     }
                 });
+
                 document.querySelectorAll('option').forEach(el => {
                     const key = el.dataset.i18nKey || el.textContent.trim();
                     if (map[key]) {
@@ -170,12 +170,35 @@ $watch('language', value => { localStorage.setItem('language', value);
                         el.textContent = map[key];
                     }
                 });
-                document.title = (map[document.title] || document.title);
+
                 document.documentElement.lang = lang;
                 document.documentElement.dir = lang === 'fa' ? 'rtl' : 'ltr';
+
+                document.querySelectorAll('[data-lang-toggle]').forEach(el => {
+                    el.textContent = lang === 'fa' ? 'EN' : 'FA';
+                });
+
                 translating = false;
             }
+
             window.DoNextTranslate = translate;
+
+            window.DoNextToggleTheme = function () {
+                const isDark = document.documentElement.classList.toggle('dark');
+                localStorage.setItem('theme', isDark ? 'dark' : 'light');
+            };
+
+            window.DoNextToggleLanguage = function () {
+                const current = localStorage.getItem('language') || 'fa';
+                const next = current === 'fa' ? 'en' : 'fa';
+                localStorage.setItem('language', next);
+                document.documentElement.lang = next;
+                document.documentElement.dir = next === 'fa' ? 'rtl' : 'ltr';
+                window.dispatchEvent(new CustomEvent('language-changed', { detail: { language: next } }));
+                // Full reload is the most reliable way with TreeWalker i18n
+                window.location.reload();
+            };
+
             document.addEventListener('DOMContentLoaded', () => {
                 translate();
                 new MutationObserver(() => translate()).observe(document.body, {
@@ -183,20 +206,29 @@ $watch('language', value => { localStorage.setItem('language', value);
                     subtree: true
                 });
             });
+
             window.addEventListener('language-changed', () => setTimeout(translate, 0));
         })();
     </script>
+
     @livewireStyles
 </head>
 
-<body
-    class="min-h-screen bg-slate-50 text-slate-900 antialiased transition-colors duration-300 dark:bg-slate-950 dark:text-white">
-    <div class="min-h-screen"><x-sidebar />
-        <div class="min-h-screen lg:ms-72"><x-navbar />
-            <main class="min-h-[calc(100vh-5rem)] p-4 sm:p-6 lg:p-8">{{ $slot ?? '' }}@yield('content')</main>
+<body class="min-h-screen bg-slate-50 text-slate-900 antialiased transition-colors duration-300 dark:bg-slate-950 dark:text-white">
+    <div class="min-h-screen">
+        <x-sidebar />
+        <div class="min-h-screen lg:ms-72">
+            <x-navbar />
+            <main class="min-h-[calc(100vh-5rem)] p-4 sm:p-6 lg:p-8">
+                {{ $slot ?? '' }}
+                @yield('content')
+            </main>
         </div>
     </div>
-    <x-toast /><x-confirm-modal />
+
+    <x-toast />
+    <x-confirm-modal />
+
     @livewireScripts
 </body>
 

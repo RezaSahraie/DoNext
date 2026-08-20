@@ -2,7 +2,7 @@
     class="sticky top-0 z-40 border-b border-slate-200/80 bg-white/85 backdrop-blur-xl dark:border-slate-800/80 dark:bg-slate-950/85">
     <div class="flex h-20 items-center justify-between px-4 sm:px-6 lg:px-8">
         <div class="flex items-center gap-3">
-            <button @click="mobileMenu = !mobileMenu"
+            <button type="button" @click="mobileMenu = !mobileMenu"
                 class="grid h-10 w-10 place-items-center rounded-xl border border-slate-200 text-slate-600 hover:bg-slate-100 dark:border-slate-700 dark:text-slate-300 lg:hidden">
                 <span x-text="mobileMenu ? '✕' : '☰'"></span>
             </button>
@@ -15,23 +15,22 @@
         </div>
 
         <div class="flex items-center gap-2">
-            <button
-                @click="$root.darkMode = !$root.darkMode"
+            {{-- Theme toggle (plain JS, works with Livewire) --}}
+            <button type="button" onclick="window.DoNextToggleTheme()"
                 class="grid h-10 w-10 place-items-center rounded-xl border border-slate-200 text-slate-600 hover:bg-slate-100 dark:border-slate-700 dark:text-slate-300 dark:hover:bg-slate-800"
                 aria-label="Theme">
-                <span x-show="!$root.darkMode">☾</span>
-                <span x-show="$root.darkMode" x-cloak>☀</span>
+                <span class="dark:hidden">☾</span>
+                <span class="hidden dark:inline">☀</span>
             </button>
 
-            <button
-                @click="$root.language = $root.language === 'fa' ? 'en' : 'fa'"
+            {{-- Language toggle --}}
+            <button type="button" onclick="window.DoNextToggleLanguage()" data-lang-toggle
                 class="hidden h-10 min-w-12 rounded-xl border border-slate-200 px-3 text-xs font-bold text-slate-600 hover:bg-slate-100 dark:border-slate-700 dark:text-slate-300 sm:block"
                 aria-label="Language">
-                <span x-text="$root.language === 'fa' ? 'EN' : 'FA'"></span>
+                EN
             </button>
 
-            <button
-                @click="notificationsOpen = !notificationsOpen"
+            <button type="button" @click="notificationsOpen = !notificationsOpen"
                 class="relative grid h-10 w-10 place-items-center rounded-xl border border-slate-200 text-slate-600 hover:bg-slate-100 dark:border-slate-700 dark:text-slate-300 dark:hover:bg-slate-800"
                 aria-label="Notifications">
                 ♢
@@ -40,12 +39,12 @@
             </button>
 
             <div class="relative" @click.outside="userMenuOpen = false">
-                <button @click="userMenuOpen = !userMenuOpen" type="button"
+                <button type="button" @click="userMenuOpen = !userMenuOpen"
                     class="ms-1 flex items-center gap-2 rounded-xl p-1 hover:bg-slate-100 dark:hover:bg-slate-800"
                     :aria-expanded="userMenuOpen">
                     <div
                         class="grid h-9 w-9 place-items-center rounded-xl bg-gradient-to-br from-indigo-500 to-violet-600 text-sm font-black text-white">
-                        R
+                        {{ mb_strtoupper(mb_substr(auth()->user()->name ?? 'U', 0, 1)) }}
                     </div>
                     <div class="hidden text-start sm:block">
                         <p class="text-xs font-bold">{{ auth()->user()->name ?? 'User' }}</p>
