@@ -6,8 +6,10 @@
         this.lang = value;
         localStorage.setItem('language', value);
         localStorage.setItem('donext-lang', value);
+        document.cookie = 'donext_locale=' + value + '; path=/; max-age=31536000; SameSite=Lax';
         document.documentElement.lang = value;
         document.documentElement.dir = value === 'fa' ? 'rtl' : 'ltr';
+        window.dispatchEvent(new CustomEvent('donext-language-changed'));
     }
 }" :lang="lang" :dir="lang === 'fa' ? 'rtl' : 'ltr'">
 
@@ -23,6 +25,7 @@
                 const lang = localStorage.getItem('language') || localStorage.getItem('donext-lang') || 'fa';
                 localStorage.setItem('language', lang);
                 localStorage.setItem('donext-lang', lang);
+                document.cookie = 'donext_locale=' + lang + '; path=/; max-age=31536000; SameSite=Lax';
                 document.documentElement.lang = lang;
                 document.documentElement.dir = lang === 'fa' ? 'rtl' : 'ltr';
 
