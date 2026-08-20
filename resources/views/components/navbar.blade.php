@@ -3,9 +3,7 @@
     class="sticky top-0 z-40 border-b border-slate-200/80 bg-white/85 backdrop-blur-xl dark:border-slate-800/80 dark:bg-slate-950/85">
     <div class="flex h-20 items-center justify-between px-4 sm:px-6 lg:px-8">
         <div class="flex items-center gap-3">
-            <button type="button" @click="mobileMenu = !mobileMenu" class="grid h-10 w-10 place-items-center rounded-xl border border-slate-200 text-slate-600 hover:bg-slate-100 dark:border-slate-700 dark:text-slate-300 lg:hidden">
-                <span x-text="mobileMenu ? '✕' : '☰'"></span>
-            </button>
+            <button type="button" @click="mobileMenu = !mobileMenu" class="grid h-10 w-10 place-items-center rounded-xl border border-slate-200 text-slate-600 hover:bg-slate-100 dark:border-slate-700 dark:text-slate-300 lg:hidden"><span x-text="mobileMenu ? '✕' : '☰'"></span></button>
             <div>
                 <p class="hidden text-xs font-medium text-slate-400 sm:block">
                     <span x-show="lang === 'fa'">{{ now()->locale('fa')->translatedFormat('l، d F Y') }}</span>
@@ -16,12 +14,10 @@
         </div>
 
         <div class="flex items-center gap-2">
-            <button type="button" onclick="window.DoNextToggleTheme()" class="grid h-10 w-10 place-items-center rounded-xl border border-slate-200 text-slate-600 hover:bg-slate-100 dark:border-slate-700 dark:text-slate-300 dark:hover:bg-slate-800" aria-label="Theme">
-                <span class="dark:hidden">☾</span><span class="hidden dark:inline">☀</span>
-            </button>
+            <button type="button" onclick="window.DoNextToggleTheme()" class="grid h-10 w-10 place-items-center rounded-xl border border-slate-200 text-slate-600 hover:bg-slate-100 dark:border-slate-700 dark:text-slate-300 dark:hover:bg-slate-800" aria-label="Theme"><span class="dark:hidden">☾</span><span class="hidden dark:inline">☀</span></button>
 
             <button type="button"
-                onclick="window.DoNextToggleLanguage(); document.cookie = 'donext_locale=' + window.DoNextLanguage() + '; path=/; max-age=31536000; SameSite=Lax'; window.dispatchEvent(new CustomEvent('donext-language-changed'));"
+                onclick="window.DoNextToggleLanguage(); document.cookie = 'donext_locale=' + window.DoNextLanguage() + '; path=/; max-age=31536000; SameSite=Lax'; window.location.reload();"
                 data-lang-toggle class="hidden h-10 min-w-12 rounded-xl border border-slate-200 px-3 text-xs font-bold text-slate-600 hover:bg-slate-100 dark:border-slate-700 dark:text-slate-300 sm:block" aria-label="Language">EN</button>
 
             <button type="button" @click="notificationsOpen = !notificationsOpen" class="relative grid h-10 w-10 place-items-center rounded-xl border border-slate-200 text-slate-600 hover:bg-slate-100 dark:border-slate-700 dark:text-slate-300" aria-label="Notifications">♢<span class="absolute end-2 top-2 h-2 w-2 rounded-full bg-indigo-500 ring-2 ring-white dark:ring-slate-950"></span></button>
@@ -54,7 +50,6 @@
     window.DoNextSyncForms = function () {
         const lang = window.DoNextLanguage ? window.DoNextLanguage() : 'fa';
         const fa = lang === 'fa';
-
         const placeholders = {
             'نام شما': ['نام شما', 'Your name'],
             'جستجوی کارها...': ['جستجوی کارها...', 'Search tasks...'],
@@ -65,36 +60,24 @@
             'مثلاً دانشگاه': ['مثلاً دانشگاه', 'e.g. University'],
             'email@example.com': ['email@example.com', 'email@example.com'],
         };
-
         document.querySelectorAll('input[placeholder], textarea[placeholder]').forEach((el) => {
             const original = el.dataset.donextPlaceholder || el.getAttribute('placeholder');
             if (!el.dataset.donextPlaceholder) el.dataset.donextPlaceholder = original;
             const pair = placeholders[el.dataset.donextPlaceholder];
             if (pair) el.setAttribute('placeholder', pair[fa ? 0 : 1]);
         });
-
         const options = {
             'کم': ['کم', 'Low'], 'متوسط': ['متوسط', 'Medium'], 'زیاد': ['زیاد', 'High'],
-            'بدون دسته‌بندی': ['بدون دسته‌بندی', 'No category'],
-            'بدون دسته': ['بدون دسته', 'No category'],
-            'پوشه': ['پوشه', 'Folder'], 'کار': ['کار', 'Work'], 'تحصیل': ['تحصیل', 'Study'],
-            'شخصی': ['شخصی', 'Personal'], 'سایر': ['سایر', 'Other'],
+            'بدون دسته‌بندی': ['بدون دسته‌بندی', 'No category'], 'بدون دسته': ['بدون دسته', 'No category'],
         };
-
         document.querySelectorAll('select option').forEach((option) => {
             const original = option.dataset.donextOption || option.textContent.trim();
             if (!option.dataset.donextOption) option.dataset.donextOption = original;
             const pair = options[original];
             if (pair) option.textContent = pair[fa ? 0 : 1];
         });
-
-        document.querySelectorAll('form').forEach((form) => {
-            form.dir = fa ? 'rtl' : 'ltr';
-        });
+        document.querySelectorAll('form').forEach((form) => { form.dir = fa ? 'rtl' : 'ltr'; });
     };
-
     document.addEventListener('DOMContentLoaded', window.DoNextSyncForms);
-    document.addEventListener('livewire:init', () => {
-        Livewire.hook('morph.updated', () => setTimeout(window.DoNextSyncForms, 10));
-    });
+    document.addEventListener('livewire:init', () => Livewire.hook('morph.updated', () => setTimeout(window.DoNextSyncForms, 10)));
 </script>
