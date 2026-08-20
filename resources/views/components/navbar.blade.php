@@ -10,10 +10,8 @@
                 <h1 class="text-lg font-black tracking-tight">@yield('heading', 'Dashboard / داشبورد')</h1>
             </div>
         </div>
-        <div class="flex items-center gap-2"><button @click="searchOpen=!searchOpen"
-                class="hidden h-10 items-center gap-2 rounded-xl border border-slate-200 bg-white px-3 text-sm font-medium text-slate-500 hover:border-indigo-300 hover:text-indigo-600 dark:border-slate-700 dark:bg-slate-900 dark:text-slate-400 sm:flex">⌕
-                <span>Search / جستجو</span><kbd
-                    class="rounded-md bg-slate-100 px-1.5 py-0.5 text-[10px] dark:bg-slate-800">/</kbd></button><button
+        <div class="flex items-center gap-2">
+                <button
                 @click="darkMode=!darkMode"
                 class="grid h-10 w-10 place-items-center rounded-xl border border-slate-200 text-slate-600 hover:bg-slate-100 dark:border-slate-700 dark:text-slate-300 dark:hover:bg-slate-800"
                 aria-label="Theme"><span x-show="!darkMode">☾</span><span x-show="darkMode">☀</span></button><button
