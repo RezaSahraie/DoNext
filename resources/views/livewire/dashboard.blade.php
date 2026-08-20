@@ -1,73 +1,96 @@
-<div x-data="{ done: false, showAll: false }" class="space-y-6">
+<div class="space-y-6">
     {{-- Welcome --}}
-    <section class="relative overflow-hidden rounded-3xl bg-gradient-to-br from-indigo-600 via-violet-600 to-indigo-800 p-6 text-white shadow-xl shadow-indigo-500/10 sm:p-8">
+    <section
+        class="relative overflow-hidden rounded-3xl bg-gradient-to-br from-indigo-600 via-violet-600 to-indigo-800 p-6 text-white shadow-xl shadow-indigo-500/10 sm:p-8">
         <div class="relative z-10 max-w-2xl">
-            <span class="inline-flex rounded-full bg-white/10 px-3 py-1 text-xs font-bold ring-1 ring-white/15"><span x-show="language==='fa'">شنبه، ۱۸ مرداد ۱۴۰۵</span><span x-show="language==='en'">Saturday, August 9, 2026</span></span>
+            <span class="inline-flex rounded-full bg-white/10 px-3 py-1 text-xs font-bold ring-1 ring-white/15">
+                {{ now()->format('l, M d, Y') }}
+            </span>
+
             <h2 class="mt-4 text-3xl font-black tracking-tight sm:text-4xl">
-                <span x-show="language==='fa'">عصر بخیر، {{ $user->name }} 👋</span>
-                <span x-show="language==='en'">Good evening, {{ $user->name }} 👋</span>
+                عصر بخیر، {{ $user->name }} 👋
             </h2>
-            <p class="mt-3 max-w-xl text-sm leading-7 text-indigo-100"><span x-show="language==='fa'">امروز هم یک قدم دیگر به هدف‌هایت نزدیک شو. کارهای مهمت را انجام بده و روزت را با موفقیت تمام کن.</span><span x-show="language==='en'">Take another step toward your goals today. Finish what matters and end your day with a win.</span></p>
-            <a href="{{ url('/tasks') }}" class="mt-6 inline-flex items-center gap-2 rounded-xl bg-white px-5 py-3 text-sm font-black text-indigo-700 shadow-lg transition hover:-translate-y-0.5"><span class="text-lg">+</span><span x-show="language==='fa'">کار جدید</span><span x-show="language==='en'">New task</span></a>
+
+            <p class="mt-3 max-w-xl text-sm leading-7 text-indigo-100">
+                امروز هم یک قدم دیگر به هدف‌هایت نزدیک شو. کارهای مهمت را انجام بده و روزت را با موفقیت تمام کن.
+            </p>
+
+            <a href="{{ url('/tasks') }}"
+                class="mt-6 inline-flex items-center gap-2 rounded-xl bg-white px-5 py-3 text-sm font-black text-indigo-700 shadow-lg transition hover:-translate-y-0.5">
+                <span class="text-lg">+</span>
+                <span>کار جدید</span>
+            </a>
         </div>
-        <div class="absolute -end-12 -top-20 h-64 w-64 rounded-full bg-white/10 blur-2xl"></div><div class="absolute -bottom-24 end-24 h-48 w-48 rounded-full bg-cyan-300/10 blur-3xl"></div>
+
+        <div class="absolute -end-12 -top-20 h-64 w-64 rounded-full bg-white/10 blur-2xl"></div>
+        <div class="absolute -bottom-24 end-24 h-48 w-48 rounded-full bg-cyan-300/10 blur-3xl"></div>
     </section>
 
     {{-- Stats --}}
-    <section class="w-full gap-4" style="display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); width: 100%;">
-        {{-- Total --}}
-        <div class="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm dark:border-slate-800 dark:bg-slate-900" style="min-width: 0;">
+    <section class="w-full gap-4"
+        style="display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); width: 100%;">
+
+        <div class="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm dark:border-slate-800 dark:bg-slate-900"
+            style="min-width: 0;">
             <div class="mb-4 flex items-center justify-between">
-                <div class="grid h-11 w-11 place-items-center rounded-xl bg-indigo-50 text-indigo-600 dark:bg-indigo-500/10 dark:text-indigo-400">
+                <div
+                    class="grid h-11 w-11 place-items-center rounded-xl bg-indigo-50 text-indigo-600 dark:bg-indigo-500/10 dark:text-indigo-400">
                     ✓
                 </div>
-                <span class="rounded-full bg-slate-100 px-2.5 py-1 text-[10px] font-bold text-slate-500 dark:bg-slate-800">
-                    All
+                <span
+                    class="rounded-full bg-slate-100 px-2.5 py-1 text-[10px] font-bold text-slate-500 dark:bg-slate-800">
+                    همه
                 </span>
             </div>
-            <p class="text-sm font-medium text-slate-500 dark:text-slate-400">Total tasks</p>
+            <p class="text-sm font-medium text-slate-500 dark:text-slate-400">کل کارها</p>
             <p class="mt-1 text-3xl font-black text-slate-900 dark:text-white">{{ $totalTasks }}</p>
         </div>
 
-        {{-- Completed --}}
-        <div class="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm dark:border-slate-800 dark:bg-slate-900" style="min-width: 0;">
+        <div class="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm dark:border-slate-800 dark:bg-slate-900"
+            style="min-width: 0;">
             <div class="mb-4 flex items-center justify-between">
-                <div class="grid h-11 w-11 place-items-center rounded-xl bg-emerald-50 text-emerald-600 dark:bg-emerald-500/10 dark:text-emerald-400">
+                <div
+                    class="grid h-11 w-11 place-items-center rounded-xl bg-emerald-50 text-emerald-600 dark:bg-emerald-500/10 dark:text-emerald-400">
                     ✓
                 </div>
-                <span class="rounded-full bg-emerald-50 px-2.5 py-1 text-[10px] font-bold text-emerald-600 dark:bg-emerald-500/10 dark:text-emerald-400">
-                    Done
+                <span
+                    class="rounded-full bg-emerald-50 px-2.5 py-1 text-[10px] font-bold text-emerald-600 dark:bg-emerald-500/10 dark:text-emerald-400">
+                    انجام شده
                 </span>
             </div>
-            <p class="text-sm font-medium text-slate-500 dark:text-slate-400">Completed</p>
+            <p class="text-sm font-medium text-slate-500 dark:text-slate-400">انجام شده</p>
             <p class="mt-1 text-3xl font-black text-emerald-600 dark:text-emerald-400">{{ $completedTasks }}</p>
         </div>
 
-        {{-- Today --}}
-        <div class="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm dark:border-slate-800 dark:bg-slate-900" style="min-width: 0;">
+        <div class="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm dark:border-slate-800 dark:bg-slate-900"
+            style="min-width: 0;">
             <div class="mb-4 flex items-center justify-between">
-                <div class="grid h-11 w-11 place-items-center rounded-xl bg-amber-50 text-amber-600 dark:bg-amber-500/10 dark:text-amber-400">
+                <div
+                    class="grid h-11 w-11 place-items-center rounded-xl bg-amber-50 text-amber-600 dark:bg-amber-500/10 dark:text-amber-400">
                     ◷
                 </div>
-                <span class="rounded-full bg-amber-50 px-2.5 py-1 text-[10px] font-bold text-amber-600 dark:bg-amber-500/10 dark:text-amber-400">
-                    Today
+                <span
+                    class="rounded-full bg-amber-50 px-2.5 py-1 text-[10px] font-bold text-amber-600 dark:bg-amber-500/10 dark:text-amber-400">
+                    امروز
                 </span>
             </div>
-            <p class="text-sm font-medium text-slate-500 dark:text-slate-400">Today</p>
+            <p class="text-sm font-medium text-slate-500 dark:text-slate-400">کارهای امروز</p>
             <p class="mt-1 text-3xl font-black text-amber-600 dark:text-amber-400">{{ $todayTasks }}</p>
         </div>
 
-        {{-- Rate --}}
-        <div class="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm dark:border-slate-800 dark:bg-slate-900" style="min-width: 0;">
+        <div class="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm dark:border-slate-800 dark:bg-slate-900"
+            style="min-width: 0;">
             <div class="mb-4 flex items-center justify-between">
-                <div class="grid h-11 w-11 place-items-center rounded-xl bg-violet-50 text-violet-600 dark:bg-violet-500/10 dark:text-violet-400">
+                <div
+                    class="grid h-11 w-11 place-items-center rounded-xl bg-violet-50 text-violet-600 dark:bg-violet-500/10 dark:text-violet-400">
                     ◒
                 </div>
-                <span class="rounded-full bg-violet-50 px-2.5 py-1 text-[10px] font-bold text-violet-600 dark:bg-violet-500/10 dark:text-violet-400">
-                    Rate
+                <span
+                    class="rounded-full bg-violet-50 px-2.5 py-1 text-[10px] font-bold text-violet-600 dark:bg-violet-500/10 dark:text-violet-400">
+                    نرخ
                 </span>
             </div>
-            <p class="text-sm font-medium text-slate-500 dark:text-slate-400">Completion rate</p>
+            <p class="text-sm font-medium text-slate-500 dark:text-slate-400">نرخ تکمیل</p>
             <p class="mt-1 text-3xl font-black text-violet-600 dark:text-violet-400">
                 {{ number_format($completionRate, 2) }}%
             </p>
@@ -81,29 +104,20 @@
 
             <div class="flex items-center justify-between border-b border-slate-100 px-5 py-5 dark:border-slate-800">
                 <div>
-                    <h3 class="font-black">
-                        <span x-show="language==='fa'">کارهای امروز</span>
-                        <span x-show="language==='en'">Today's tasks</span>
-                    </h3>
+                    <h3 class="font-black">کارهای امروز</h3>
                     <p class="mt-1 text-xs text-slate-400">
-                        <span x-show="language==='fa'">{{ $todayRemaining }} کار باقی مانده</span>
-                        <span x-show="language==='en'">{{ $todayRemaining }} tasks remaining</span>
+                        {{ $todayRemaining }} کار باقی مانده
                     </p>
                 </div>
 
-                <a href="{{ url('/tasks') }}"
-                    class="text-xs font-bold text-indigo-600 dark:text-indigo-400">
-                    <span x-show="language==='fa'">مشاهده همه ←</span>
-                    <span x-show="language==='en'">View all →</span>
+                <a href="{{ url('/tasks') }}" class="text-xs font-bold text-indigo-600 dark:text-indigo-400">
+                    مشاهده همه ←
                 </a>
             </div>
 
             <div class="divide-y divide-slate-100 dark:divide-slate-800">
-
                 @forelse ($todaysTaskList as $task)
                     <div class="flex items-center gap-4 px-5 py-4 transition hover:bg-slate-50 dark:hover:bg-slate-800/50">
-
-                        {{-- Status indicator --}}
                         <div
                             class="grid h-6 w-6 shrink-0 place-items-center rounded-full border-2
                             {{ $task->status === 'completed'
@@ -134,60 +148,47 @@
                             </p>
                         </div>
 
-                        {{-- Priority badge --}}
                         @if ($task->priority === 'high')
                             <span
                                 class="hidden rounded-full bg-rose-50 px-2.5 py-1 text-[10px] font-bold text-rose-600 dark:bg-rose-500/10 dark:text-rose-400 sm:block">
-                                High
+                                زیاد
                             </span>
                         @elseif ($task->priority === 'medium')
                             <span
                                 class="hidden rounded-full bg-amber-50 px-2.5 py-1 text-[10px] font-bold text-amber-600 dark:bg-amber-500/10 dark:text-amber-400 sm:block">
-                                Medium
+                                متوسط
                             </span>
                         @else
                             <span
                                 class="hidden rounded-full bg-emerald-50 px-2.5 py-1 text-[10px] font-bold text-emerald-600 dark:bg-emerald-500/10 dark:text-emerald-400 sm:block">
-                                Low
+                                کم
                             </span>
                         @endif
-
                     </div>
                 @empty
                     <div class="px-5 py-10 text-center">
                         <p class="text-sm font-bold text-slate-700 dark:text-slate-200">
-                            <span x-show="language==='fa'">کاری برای امروز نداری</span>
-                            <span x-show="language==='en'">No tasks for today</span>
+                            کاری برای امروز نداری
                         </p>
                         <p class="mt-1 text-xs text-slate-400">
-                            <span x-show="language==='fa'">یک کار با تاریخ امروز بساز</span>
-                            <span x-show="language==='en'">Create a task with today's due date</span>
+                            یک کار با تاریخ امروز بساز
                         </p>
                         <a href="{{ url('/tasks') }}"
                             class="mt-4 inline-flex rounded-xl bg-indigo-600 px-4 py-2 text-xs font-bold text-white hover:bg-indigo-700">
-                            <span x-show="language==='fa'">رفتن به کارها</span>
-                            <span x-show="language==='en'">Go to tasks</span>
+                            رفتن به کارها
                         </a>
                     </div>
                 @endforelse
-
             </div>
         </section>
 
         {{-- Weekly progress --}}
         <section
             class="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm dark:border-slate-800 dark:bg-slate-900">
-
             <div class="flex items-start justify-between">
                 <div>
-                    <h3 class="font-black">
-                        <span x-show="language==='fa'">پیشرفت هفتگی</span>
-                        <span x-show="language==='en'">Weekly progress</span>
-                    </h3>
-                    <p class="mt-1 text-xs text-slate-400">
-                        <span x-show="language==='fa'">عملکرد این هفته</span>
-                        <span x-show="language==='en'">Your performance this week</span>
-                    </p>
+                    <h3 class="font-black">پیشرفت هفتگی</h3>
+                    <p class="mt-1 text-xs text-slate-400">عملکرد این هفته</p>
                 </div>
 
                 <span
@@ -197,7 +198,6 @@
             </div>
 
             <div class="my-7 flex items-center gap-5">
-                {{-- Circle progress --}}
                 <div class="relative grid h-32 w-32 shrink-0 place-items-center rounded-full"
                     style="background: conic-gradient(#4f46e5 0 {{ $weeklyRate }}%, #e2e8f0 {{ $weeklyRate }}% 100%)">
                     <div class="grid h-24 w-24 place-items-center rounded-full bg-white dark:bg-slate-900">
@@ -207,17 +207,14 @@
 
                 <div>
                     <p class="text-sm font-bold">
-                        <span x-show="language==='fa'">{{ $weeklyCompleted }} از {{ $weeklyTotal }} کار</span>
-                        <span x-show="language==='en'">{{ $weeklyCompleted }} of {{ $weeklyTotal }} tasks</span>
+                        {{ $weeklyCompleted }} از {{ $weeklyTotal }} کار
                     </p>
                     <p class="mt-2 text-xs leading-5 text-slate-400">
-                        <span x-show="language==='fa'">بر اساس کارهای دارای موعد در این هفته</span>
-                        <span x-show="language==='en'">Based on tasks due this week</span>
+                        بر اساس کارهای دارای موعد در این هفته
                     </p>
                 </div>
             </div>
 
-            {{-- Bar chart: completed tasks per day --}}
             <div class="flex h-24 items-end gap-2">
                 @foreach ($weeklyBars as $index => $count)
                     @php
@@ -240,37 +237,25 @@
     {{-- Upcoming --}}
     <section
         class="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm dark:border-slate-800 dark:bg-slate-900">
-
         <div class="mb-5 flex items-center justify-between">
             <div>
-                <h3 class="font-black">
-                    <span x-show="language==='fa'">کارهای پیش رو</span>
-                    <span x-show="language==='en'">Upcoming tasks</span>
-                </h3>
-                <p class="mt-1 text-xs text-slate-400">
-                    <span x-show="language==='fa'">برنامه روزهای آینده</span>
-                    <span x-show="language==='en'">What's coming next</span>
-                </p>
+                <h3 class="font-black">کارهای پیش رو</h3>
+                <p class="mt-1 text-xs text-slate-400">برنامه روزهای آینده</p>
             </div>
 
-            <a href="{{ url('/calendar') }}"
-                class="text-xs font-bold text-indigo-600 dark:text-indigo-400">
-                <span x-show="language==='fa'">تقویم ←</span>
-                <span x-show="language==='en'">Calendar →</span>
+            <a href="{{ url('/calendar') }}" class="text-xs font-bold text-indigo-600 dark:text-indigo-400">
+                تقویم ←
             </a>
         </div>
 
         <div class="grid gap-3 md:grid-cols-3">
-
             @forelse ($upcomingTasks as $task)
                 <div
                     class="rounded-2xl border border-slate-100 bg-slate-50 p-4 dark:border-slate-800 dark:bg-slate-800/50">
-
                     <div class="flex items-center justify-between gap-2">
                         <span class="text-xs font-bold text-indigo-600 dark:text-indigo-400">
                             {{ $task->due_date->format('Y-m-d') }}
                         </span>
-
                         <span class="text-[10px] text-slate-400">
                             {{ $task->due_date->diffForHumans() }}
                         </span>
@@ -285,21 +270,18 @@
                             {{ $task->category->name }}
                         </p>
                     @endif
-
                 </div>
             @empty
-                <div class="md:col-span-3 rounded-2xl border border-dashed border-slate-200 px-4 py-8 text-center dark:border-slate-700">
+                <div
+                    class="md:col-span-3 rounded-2xl border border-dashed border-slate-200 px-4 py-8 text-center dark:border-slate-700">
                     <p class="text-sm font-bold text-slate-700 dark:text-slate-200">
-                        <span x-show="language==='fa'">کار پیش‌رویی نداری</span>
-                        <span x-show="language==='en'">No upcoming tasks</span>
+                        کار پیش‌رویی نداری
                     </p>
                     <p class="mt-1 text-xs text-slate-400">
-                        <span x-show="language==='fa'">برای روزهای بعد یک کار با تاریخ بساز</span>
-                        <span x-show="language==='en'">Create a task with a future due date</span>
+                        برای روزهای بعد یک کار با تاریخ بساز
                     </p>
                 </div>
             @endforelse
-
         </div>
     </section>
 </div>
