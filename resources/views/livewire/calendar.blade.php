@@ -126,32 +126,46 @@
             <div class="space-y-3">
                 @forelse ($selectedTasks as $task)
                     <div class="rounded-2xl border border-slate-200 p-4 dark:border-slate-800">
-                        <div class="flex items-center justify-between gap-2">
-                            <span class="text-xs font-bold text-slate-400">
-                                {{ $task->due_date?->format('H:i') ?? '—' }}
-                            </span>
+                        <div class="flex items-start gap-3">
 
-                            @if ($task->priority === 'high')
-                                <span class="rounded-full bg-rose-50 px-2 py-1 text-[10px] font-bold text-rose-600 dark:bg-rose-500/10 dark:text-rose-400">زیاد</span>
-                            @elseif ($task->priority === 'medium')
-                                <span class="rounded-full bg-amber-50 px-2 py-1 text-[10px] font-bold text-amber-600 dark:bg-amber-500/10 dark:text-amber-400">متوسط</span>
-                            @else
-                                <span class="rounded-full bg-emerald-50 px-2 py-1 text-[10px] font-bold text-emerald-600 dark:bg-emerald-500/10 dark:text-emerald-400">کم</span>
-                            @endif
+                            {{-- Toggle complete --}}
+                            <button type="button"
+                                wire:click="toggleTask({{ $task->id }})"
+                                wire:loading.attr="disabled"
+                                class="mt-0.5 grid h-6 w-6 shrink-0 place-items-center rounded-full border-2 transition
+                                {{ $task->status === 'completed'
+                                    ? 'border-emerald-500 bg-emerald-500 text-white'
+                                    : 'border-slate-300 text-transparent hover:border-indigo-500 hover:bg-indigo-500 hover:text-white dark:border-slate-600' }}">
+                                ✓
+                            </button>
+
+                            <div class="min-w-0 flex-1">
+                                <div class="flex items-center justify-between gap-2">
+                                    <span class="text-xs font-bold text-slate-400">
+                                        {{ $task->due_date?->format('H:i') ?? '—' }}
+                                    </span>
+
+                                    @if ($task->priority === 'high')
+                                        <span class="rounded-full bg-rose-50 px-2 py-1 text-[10px] font-bold text-rose-600 dark:bg-rose-500/10 dark:text-rose-400">زیاد</span>
+                                    @elseif ($task->priority === 'medium')
+                                        <span class="rounded-full bg-amber-50 px-2 py-1 text-[10px] font-bold text-amber-600 dark:bg-amber-500/10 dark:text-amber-400">متوسط</span>
+                                    @else
+                                        <span class="rounded-full bg-emerald-50 px-2 py-1 text-[10px] font-bold text-emerald-600 dark:bg-emerald-500/10 dark:text-emerald-400">کم</span>
+                                    @endif
+                                </div>
+
+                                <h4 @class([
+                                    'mt-2 text-sm font-black',
+                                    'text-slate-400 line-through' => $task->status === 'completed',
+                                ])>
+                                    {{ $task->title }}
+                                </h4>
+
+                                <p class="mt-1 text-xs text-slate-400">
+                                    {{ $task->category?->name ?? 'بدون دسته' }}
+                                </p>
+                            </div>
                         </div>
-
-                        <h4 @class([
-                            'mt-3 text-sm font-black',
-                            'text-slate-400 line-through' => $task->status === 'completed',
-                        ])>
-                            {{ $task->title }}
-                        </h4>
-
-                        <p class="mt-1 text-xs text-slate-400">
-                            {{ $task->category?->name ?? 'بدون دسته' }}
-                            ·
-                            {{ $task->status === 'completed' ? 'انجام شده' : 'در انتظار' }}
-                        </p>
                     </div>
                 @empty
                     <div class="rounded-2xl border border-dashed border-slate-200 px-4 py-8 text-center dark:border-slate-700">
@@ -163,6 +177,43 @@
                         </p>
                     </div>
                 @endforelse
+                {{-- Quick create for selected day --}}
+                @if ($selectedDate)
+                    <form wire:submit="createTaskForSelectedDay" class="mt-5 space-y-3 border-t border-slate-100 pt-5 dark:border-slate-800">
+                        <p class="text-xs font-bold text-slate-500">
+                            کار جدید برای این روز
+                        </p>
+
+                        <input type="text" wire:model="quickTitle" placeholder="عنوان کار..."
+                            class="h-11 w-full rounded-xl border border-slate-200 bg-slate-50 px-3 text-sm outline-none focus:border-indigo-500 focus:ring-4 focus:ring-indigo-500/10 dark:border-slate-700 dark:bg-slate-800 dark:text-white">
+
+                        @error('quickTitle')
+                            <p class="text-sm text-red-500">{{ $message }}</p>
+                        @enderror
+
+                        <input type="text" wire:model="quickDescription" placeholder="توضیح کار..."
+                            class="h-11 w-full rounded-xl border border-slate-200 bg-slate-50 px-3 text-sm outline-none focus:border-indigo-500 focus:ring-4 focus:ring-indigo-500/10 dark:border-slate-700 dark:bg-slate-800 dark:text-white">
+
+                        @error('quickDescription')
+                            <p class="text-sm text-red-500">{{ $message }}</p>
+                        @enderror
+
+                        <select wire:model="quickPriority"
+                            class="h-11 w-full rounded-xl border border-slate-200 bg-slate-50 px-3 text-sm dark:border-slate-700 dark:bg-slate-800 dark:text-white">
+                            <option value="low">کم</option>
+                            <option value="medium">متوسط</option>
+                            <option value="high">زیاد</option>
+                        </select>
+
+                        <button type="submit"
+                            wire:loading.attr="disabled"
+                            wire:target="createTaskForSelectedDay"
+                            class="w-full rounded-xl bg-indigo-600 py-2.5 text-sm font-bold text-white transition hover:bg-indigo-700 disabled:opacity-60">
+                            <span wire:loading.remove wire:target="createTaskForSelectedDay">افزودن</span>
+                            <span wire:loading wire:target="createTaskForSelectedDay">...</span>
+                        </button>
+                    </form>
+                @endif
             </div>
         </aside>
     </div>

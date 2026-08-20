@@ -23,6 +23,10 @@ class Calendar extends Component
     /** Selected day as Y-m-d or null */
     public ?string $selectedDate = null;
 
+    public string $quickTitle = '';
+    public string $quickDescription = '';
+    public string $quickPriority = 'medium';
+
     /**
      * =====================
      * Mount
@@ -72,6 +76,66 @@ class Calendar extends Component
         $this->selectedDate = $date;
     }
 
+    /**
+     * =====================
+     * Toggle task status
+     * =====================
+     */
+    public function toggleTask(int $taskId): void{
+        $task = Task::query()->where('id', $taskId)->where('user_id', Auth::id())->firstOrFail();
+
+        if($task->status === 'completed'){
+            $task->update([
+                'status' => 'pending',
+                'completed_at' => null,
+            ]);
+            $this->dispatch('toast', type: 'success', message: 'Task marked as pending.');
+
+            return;
+        }
+
+        $task->update([
+            'status' => 'completed',
+            'completed_at' => now(),
+        ]);
+        $this->dispatch('toast', type: 'success', message: 'Task completed successfully.');
+    }
+
+    /**
+     * =====================
+     * Create task for selected day
+     * =====================
+     */
+    public function createTaskForSelectedDay(): void
+    {
+        if (!$this->selectedDate) {
+            return;
+        }
+
+        $validated = $this->validate([
+            'quickTitle' => ['required', 'string', 'max:255'],
+            'quickDescription' => ['nullable', 'string'],
+            'quickPriority' => ['required', 'in:low,medium,high'],
+        ]);
+
+        Task::create([
+            'user_id' => Auth::id(),
+            'title' => $validated['quickTitle'],
+            'description' => $validated['quickDescription'],
+            'priority' => $validated['quickPriority'],
+            'due_date' => $this->selectedDate,
+            'status' => 'pending',
+        ]);
+
+        $this->reset(['quickTitle']);
+        $this->quickPriority = 'medium';
+
+        $this->dispatch(
+            'toast',
+            type: 'success',
+            message: 'Task created successfully.'
+        );
+    }
     /**
      * =====================
      * Render
