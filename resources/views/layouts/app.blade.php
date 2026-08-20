@@ -40,8 +40,8 @@
     </style>
 
     <script>
-        // Persian (source in Blade) -> English
         window.DoNextPairs = {
+            // Nav / common
             'داشبورد': 'Dashboard',
             'کارها': 'Tasks',
             'تقویم': 'Calendar',
@@ -68,24 +68,43 @@
             'ویرایش': 'Edit',
             'حذف': 'Delete',
             'بازگشت': 'Back',
+            'خروج': 'Logout',
+            'ذخیره': 'Save',
+            'جستجو': 'Search',
+            'کارها را انجام بده.': 'Get things done.',
+
+            // Tasks page
+            'مدیریت کارها': 'Task management',
+            'کارهای من': 'My tasks',
+            'همه کارهایت را در یک فضای ساده و مرتب مدیریت کن.': 'Manage all your tasks in one simple, organized space.',
+            'جستجوی کارها...': 'Search tasks...',
+            'لیست کارها': 'Task list',
+            'بدون تاریخ': 'No date',
+            'بدون اولویت': 'No priority',
+            'هنوز کاری نداری': 'You have no tasks yet',
+            'اولین کارت را ایجاد کن تا کارهایت را اینجا مدیریت کنی.': 'Create your first task to manage your work here.',
+            'ایجاد اولین کار': 'Create first task',
+            'ایجاد کار جدید': 'Create new task',
+            'اطلاعات کار جدید را وارد کنید.': 'Enter the new task details.',
+            'مثلاً یادگیری Livewire': 'e.g. Learn Livewire',
+            'دسته‌بندی': 'Category',
+            'بدون دسته‌بندی': 'No category',
+            'تاریخ انجام': 'Due date',
+            'در حال ایجاد...': 'Creating...',
+            'ویرایش کار': 'Edit task',
+            'اطلاعات کار را ویرایش کنید.': 'Update the task details.',
+            'در حال ذخیره...': 'Saving...',
+            'حذف کار': 'Delete task',
+            'آیا از حذف این کار مطمئن هستید؟': 'Are you sure you want to delete this task?',
+            'عنوان کار': 'Task title',
+            'توضیحات': 'Description',
+            'توضیحات کار...': 'Task description...',
+            'اولویت': 'Priority',
+
+            // Dashboard / profile / calendar extras
             'کل کارها': 'Total Tasks',
             'نرخ تکمیل': 'Completion Rate',
-            'ورود': 'Login',
-            'ثبت‌نام': 'Register',
-            'رمز عبور': 'Password',
-            'ایمیل': 'Email',
-            'نام': 'Name',
-            'موعد': 'Due date',
-            'توضیحات': 'Description',
-            'اولویت': 'Priority',
-            'عنوان کار': 'Task title',
-            'توضیحات کار...': 'Task description...',
-            'عنوان کار...': 'Task title...',
-            'توضیح کار...': 'Task description...',
-            'نام دسته‌بندی': 'Category name',
-            'صفحه پیدا نشد': 'Page not found',
-            'دسته جدید': 'New Category',
-            'ایجاد دسته': 'Create Category',
+            'نرخ': 'Rate',
             'اطلاعات شخصی': 'Personal Information',
             'فعالیت': 'Activity',
             'کارهای امروز': "Today's tasks",
@@ -105,7 +124,6 @@
             'بدون دسته': 'No category',
             'ویرایش پروفایل': 'Edit profile',
             'در حال ویرایش': 'Editing',
-            'در حال ذخیره...': 'Saving...',
             'نام شما': 'Your name',
             'کاری برای امروز نداری': 'No tasks for today',
             'یک کار با تاریخ امروز بساز': "Create a task with today's due date",
@@ -114,8 +132,6 @@
             'برای روزهای بعد یک کار با تاریخ بساز': 'Create a task with a future due date',
             'بر اساس کارهای دارای موعد در این هفته': 'Based on tasks due this week',
             'امروز هم یک قدم دیگر به هدف‌هایت نزدیک شو. کارهای مهمت را انجام بده و روزت را با موفقیت تمام کن.': 'Take another step toward your goals today. Finish what matters and end your day with a win.',
-            'نرخ': 'Rate',
-            'خروج': 'Logout',
             'شنبه': 'Saturday',
             'یکشنبه': 'Sunday',
             'دوشنبه': 'Monday',
@@ -124,10 +140,16 @@
             'پنجشنبه': 'Thursday',
             'جمعه': 'Friday',
             'دسته': 'Category',
-            'ذخیره': 'Save',
-            'برگشت': 'Back',
-            'جستجو': 'Search',
-            'کارها را انجام بده.': 'Get things done.'
+            'دسته جدید': 'New Category',
+            'ایجاد دسته': 'Create Category',
+            'نام دسته‌بندی': 'Category name',
+            'صفحه پیدا نشد': 'Page not found',
+            'ورود': 'Login',
+            'ثبت‌نام': 'Register',
+            'رمز عبور': 'Password',
+            'ایمیل': 'Email',
+            'نام': 'Name',
+            'موعد': 'Due date'
         };
 
         window.DoNextToggleTheme = function () {
@@ -142,7 +164,6 @@
             window.location.reload();
         };
 
-        // Translate only once when language is English (page source is Persian)
         window.DoNextTranslateToEnglish = function () {
             const map = window.DoNextPairs || {};
 
@@ -156,8 +177,31 @@
 
                 const raw = n.nodeValue;
                 const trimmed = raw.trim();
-                if (trimmed && map[trimmed]) {
+                if (!trimmed) return;
+
+                if (map[trimmed]) {
                     n.nodeValue = raw.replace(trimmed, map[trimmed]);
+                    return;
+                }
+
+                // Dynamic: "12 کار در لیست"
+                const countMatch = trimmed.match(/^(\d+)\s+کار در لیست$/);
+                if (countMatch) {
+                    n.nodeValue = raw.replace(trimmed, countMatch[1] + ' tasks in list');
+                    return;
+                }
+
+                // Dynamic: "3 کار باقی مانده"
+                const remainMatch = trimmed.match(/^(\d+)\s+کار باقی مانده$/);
+                if (remainMatch) {
+                    n.nodeValue = raw.replace(trimmed, remainMatch[1] + ' tasks remaining');
+                    return;
+                }
+
+                // Dynamic: "5 از 10 کار"
+                const ofMatch = trimmed.match(/^(\d+)\s+از\s+(\d+)\s+کار$/);
+                if (ofMatch) {
+                    n.nodeValue = raw.replace(trimmed, ofMatch[1] + ' of ' + ofMatch[2] + ' tasks');
                 }
             });
 
@@ -184,7 +228,6 @@
             }
         });
 
-        // After Livewire updates, re-apply EN once (debounced, no observer loop)
         document.addEventListener('livewire:init', function () {
             var timer = null;
             Livewire.hook('morph.updated', function () {
