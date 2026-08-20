@@ -1,0 +1,43 @@
+<?php
+
+return [
+    'required' => 'The :attribute field is required.',
+    'email' => 'The :attribute must be a valid email address.',
+    'unique' => 'The :attribute has already been taken.',
+    'confirmed' => 'The :attribute confirmation does not match.',
+    'string' => 'The :attribute must be a string.',
+    'max' => [
+        'string' => 'The :attribute may not be greater than :max characters.',
+    ],
+    'min' => [
+        'string' => 'The :attribute must be at least :min characters.',
+    ],
+    'date' => 'The :attribute is not a valid date.',
+    'integer' => 'The :attribute must be an integer.',
+    'exists' => 'The selected :attribute is invalid.',
+    'in' => 'The selected :attribute is invalid.',
+    'attributes' => [
+        'name' => 'name',
+        'email' => 'email',
+        'password' => 'password',
+        'password_confirmation' => 'password confirmation',
+        'title' => 'task title',
+        'description' => 'description',
+        'priority' => 'priority',
+        'due_date' => 'due date',
+        'category_id' => 'category',
+        'editTitle' => 'task title',
+        'editDescription' => 'description',
+        'editPriority' => 'priority',
+        'editDueDate' => 'due date',
+        'editCategoryId' => 'category',
+        'quickTitle' => 'task title',
+        'quickDescription' => 'description',
+        'quickPriority' => 'priority',
+        'color' => 'color',
+        'icon' => 'icon',
+        'editName' => 'category name',
+        'editColor' => 'color',
+        'editIcon' => 'icon',
+    ],
+];
