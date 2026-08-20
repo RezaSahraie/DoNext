@@ -15,15 +15,18 @@ class Login extends Component
     public string $password = '';
     public bool $remember = false;
 
-    public function login() : void {
+    public function login(): void
+    {
         $credentials = $this->validate([
-            'email' =>['required', 'email'],
-            'password' => ['required', 'string',]
+            'email' => ['required', 'email'],
+            'password' => ['required', 'string'],
         ]);
 
-        if (!Auth::attempt(['email' => $credentials['email'], 'password' => $credentials['password']],
-        $this->remember)) {
-            $this->addError('email', 'The provided credentials are incorrect.');
+        if (! Auth::attempt([
+            'email' => $credentials['email'],
+            'password' => $credentials['password'],
+        ], $this->remember)) {
+            $this->addError('email', __('auth.failed'));
             return;
         }
 
