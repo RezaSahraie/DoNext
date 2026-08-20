@@ -24,7 +24,9 @@
                 <span class="hidden dark:inline">☀</span>
             </button>
 
-            <button type="button" onclick="window.DoNextToggleLanguage(); window.dispatchEvent(new CustomEvent('donext-language-changed'));" data-lang-toggle
+            <button type="button"
+                onclick="window.DoNextToggleLanguage(); document.cookie = 'donext_locale=' + window.DoNextLanguage() + '; path=/; max-age=31536000; SameSite=Lax'; window.dispatchEvent(new CustomEvent('donext-language-changed'));"
+                data-lang-toggle
                 class="hidden h-10 min-w-12 rounded-xl border border-slate-200 px-3 text-xs font-bold text-slate-600 hover:bg-slate-100 dark:border-slate-700 dark:text-slate-300 sm:block"
                 aria-label="Language">EN</button>
 
