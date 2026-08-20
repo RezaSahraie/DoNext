@@ -12,85 +12,74 @@ use Livewire\Component;
 #[Layout('layouts.app')]
 class Calendar extends Component
 {
-    /**
-     * =====================
-     * properties
-     * =====================
-     */
     public int $year;
     public int $month;
-
-    /** Selected day as Y-m-d or null */
     public ?string $selectedDate = null;
 
     public string $quickTitle = '';
     public string $quickDescription = '';
     public string $quickPriority = 'medium';
 
-    /**
-     * =====================
-     * Mount
-     * =====================
-     */
     public function mount(): void
     {
         $today = now();
-
         $this->year = (int) $today->year;
         $this->month = (int) $today->month;
         $this->selectedDate = $today->toDateString();
     }
 
-    /**
-     * =====================
-     * Navigation
-     * =====================
-     */
     public function previousMonth(): void
     {
         $date = Carbon::create($this->year, $this->month, 1)->subMonth();
+        $this->year = $date->year;
+        $this->month = $date->month;
 
-        $this->year = (int) $date->year;
-        $this->month = (int) $date->month;
+        // Keep selection inside the visible month.
+        $this->selectedDate = $date->toDateString();
     }
 
     public function nextMonth(): void
     {
         $date = Carbon::create($this->year, $this->month, 1)->addMonth();
-
-        $this->year = (int) $date->year;
-        $this->month = (int) $date->month;
+        $this->year = $date->year;
+        $this->month = $date->month;
+        $this->selectedDate = $date->toDateString();
     }
 
     public function goToToday(): void
     {
         $today = now();
-
-        $this->year = (int) $today->year;
-        $this->month = (int) $today->month;
+        $this->year = $today->year;
+        $this->month = $today->month;
         $this->selectedDate = $today->toDateString();
     }
 
     public function selectDate(string $date): void
     {
-        $this->selectedDate = $date;
+        $parsed = Carbon::createFromFormat('Y-m-d', $date);
+
+        if ((int) $parsed->year !== $this->year || (int) $parsed->month !== $this->month) {
+            return;
+        }
+
+        $this->selectedDate = $parsed->toDateString();
+        $this->resetValidation();
     }
 
-    /**
-     * =====================
-     * Toggle task status
-     * =====================
-     */
-    public function toggleTask(int $taskId): void{
-        $task = Task::query()->where('id', $taskId)->where('user_id', Auth::id())->firstOrFail();
+    public function toggleTask(int $taskId): void
+    {
+        $task = Task::query()
+            ->whereKey($taskId)
+            ->where('user_id', Auth::id())
+            ->firstOrFail();
 
-        if($task->status === 'completed'){
+        if ($task->status === 'completed') {
             $task->update([
                 'status' => 'pending',
                 'completed_at' => null,
             ]);
-            $this->dispatch('toast', type: 'success', message: 'Task marked as pending.');
 
+            $this->dispatch('toast', type: 'success', message: 'Task marked as pending.');
             return;
         }
 
@@ -98,49 +87,37 @@ class Calendar extends Component
             'status' => 'completed',
             'completed_at' => now(),
         ]);
+
         $this->dispatch('toast', type: 'success', message: 'Task completed successfully.');
     }
 
-    /**
-     * =====================
-     * Create task for selected day
-     * =====================
-     */
     public function createTaskForSelectedDay(): void
     {
-        if (!$this->selectedDate) {
-            return;
-        }
-
         $validated = $this->validate([
             'quickTitle' => ['required', 'string', 'max:255'],
             'quickDescription' => ['nullable', 'string'],
             'quickPriority' => ['required', 'in:low,medium,high'],
         ]);
 
+        if (!$this->selectedDate) {
+            return;
+        }
+
         Task::create([
             'user_id' => Auth::id(),
             'title' => $validated['quickTitle'],
             'description' => $validated['quickDescription'],
             'priority' => $validated['quickPriority'],
-            'due_date' => $this->selectedDate,
+            'due_date' => Carbon::createFromFormat('Y-m-d', $this->selectedDate)->startOfDay(),
             'status' => 'pending',
         ]);
 
-        $this->reset(['quickTitle']);
+        $this->reset(['quickTitle', 'quickDescription']);
         $this->quickPriority = 'medium';
 
-        $this->dispatch(
-            'toast',
-            type: 'success',
-            message: 'Task created successfully.'
-        );
+        $this->dispatch('toast', type: 'success', message: 'Task created successfully.');
     }
-    /**
-     * =====================
-     * Render
-     * =====================
-     */
+
     public function render()
     {
         /** @var User $user */
@@ -149,7 +126,6 @@ class Calendar extends Component
         $startOfMonth = Carbon::create($this->year, $this->month, 1)->startOfDay();
         $endOfMonth = $startOfMonth->copy()->endOfMonth();
 
-        // Tasks in this month for the authenticated user
         $tasks = Task::query()
             ->where('user_id', $user->id)
             ->whereNotNull('due_date')
@@ -158,24 +134,16 @@ class Calendar extends Component
             ->orderBy('due_date')
             ->get();
 
-        // Group tasks by date: ['2026-08-20' => Collection]
-        $tasksByDate = $tasks->groupBy(function (Task $task) {
-            return $task->due_date->format('Y-m-d');
-        });
+        $tasksByDate = $tasks->groupBy(fn (Task $task) => $task->due_date->toDateString());
 
-        // Build calendar cells (Monday-start week)
-        // Carbon: dayOfWeekIso = 1 (Mon) ... 7 (Sun)
-        $startWeekday = $startOfMonth->dayOfWeekIso; // 1-7
+        $startWeekday = $startOfMonth->dayOfWeekIso;
         $daysInMonth = $startOfMonth->daysInMonth;
-
         $cells = [];
 
-        // Empty cells before day 1
         for ($i = 1; $i < $startWeekday; $i++) {
             $cells[] = null;
         }
 
-        // Real days
         for ($day = 1; $day <= $daysInMonth; $day++) {
             $date = Carbon::create($this->year, $this->month, $day);
             $key = $date->toDateString();
@@ -188,7 +156,6 @@ class Calendar extends Component
             ];
         }
 
-        // Selected day tasks
         $selectedTasks = collect();
         if ($this->selectedDate) {
             $selectedTasks = Task::query()
@@ -202,10 +169,6 @@ class Calendar extends Component
 
         $monthTitle = $startOfMonth->translatedFormat('F Y');
 
-        return view('livewire.calendar', [
-            'cells' => $cells,
-            'monthTitle' => $monthTitle,
-            'selectedTasks' => $selectedTasks,
-        ]);
+        return view('livewire.calendar', compact('cells', 'monthTitle', 'selectedTasks'));
     }
 }
