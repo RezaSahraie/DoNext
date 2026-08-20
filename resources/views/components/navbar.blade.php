@@ -31,7 +31,6 @@
                         R</div>
                     <div class="hidden text-start sm:block">
                         <p class="text-xs font-bold">Reza</p>
-                        <p class="text-[10px] text-slate-400">Free Plan / پلن رایگان</p>
                     </div><span class="hidden text-xs text-slate-400 sm:block"
                         :class="userMenuOpen ? 'rotate-180' : ''">⌄</span>
                 </button>
@@ -56,21 +55,6 @@
     <div x-show="searchOpen" x-cloak x-transition class="border-t border-slate-200 px-4 py-3 dark:border-slate-800">
         <input autofocus placeholder="Search tasks / جستجوی کارها..."
             class="h-11 w-full rounded-xl border border-slate-200 bg-slate-50 px-4 text-sm outline-none focus:border-indigo-500 dark:border-slate-700 dark:bg-slate-900">
-    </div>
-    <div x-show="notificationsOpen" x-cloak @click.outside="notificationsOpen=false" x-transition
-        class="absolute end-4 top-16 w-80 rounded-2xl border border-slate-200 bg-white p-3 shadow-2xl dark:border-slate-800 dark:bg-slate-900">
-        <div class="flex items-center justify-between px-2 py-2"><b class="text-sm">Notifications / اعلان‌ها</b><span
-                class="text-[10px] text-indigo-600">3 new / ۳ جدید</span></div>
-        <div class="space-y-1">
-            <div class="rounded-xl p-3 hover:bg-slate-50 dark:hover:bg-slate-800">
-                <p class="text-xs font-bold">موعد یک کار نزدیک است</p>
-                <p class="mt-1 text-[10px] text-slate-400">۲ ساعت دیگر</p>
-            </div>
-            <div class="rounded-xl p-3 hover:bg-slate-50 dark:hover:bg-slate-800">
-                <p class="text-xs font-bold">۳ کار امروز تکمیل شد 🎉</p>
-                <p class="mt-1 text-[10px] text-slate-400">امروز</p>
-            </div>
-        </div>
     </div>
     <div x-show="mobileMenu" x-cloak x-transition
         class="border-t border-slate-200 bg-white px-4 py-4 dark:border-slate-800 dark:bg-slate-950 lg:hidden">
