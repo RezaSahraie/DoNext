@@ -1,4 +1,5 @@
 @section('title','Categories — DoNext')
+@section('heading', 'Categories / دسته بندی ها')
 <div
     x-data="{
         showCreateModal: false,

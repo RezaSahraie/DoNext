@@ -1,4 +1,5 @@
 @section('title','Tasks — DoNext')
+@section('heading', 'Tasks / کارها')
 <div x-data="{
     filter: 'all',
     showModal: false,

@@ -1,3 +1,4 @@
+@section('heading', 'Dashboard / داشبورد')
 <div class="space-y-6">
     {{-- Welcome --}}
     <section

@@ -10,7 +10,7 @@
                 <p class="hidden text-xs font-medium text-slate-400 sm:block">
                     {{ now()->format('l, M d, Y') }} · امروز
                 </p>
-                <h1 class="text-lg font-black tracking-tight">@yield('heading', 'Dashboard / داشبورد')</h1>
+                <h1 class="text-lg font-black tracking-tight">@yield('heading', 'DoNext')</h1>
             </div>
         </div>
 

@@ -1,4 +1,5 @@
 @section('title','Calendar — DoNext')
+@section('heading', 'Calendar / تقویم')
 <div class="space-y-6">
 
     {{-- Header --}}
