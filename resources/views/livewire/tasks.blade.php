@@ -280,6 +280,7 @@
                                 </svg>
 
                                 @if ($task->due_date)
+                                    Due date:
                                     {{ $task->due_date->format('Y-m-d') }}
                                 @else
                                     بدون تاریخ
@@ -304,7 +305,7 @@
                                         <path d="M16 2v4M8 2v4M3 10h18" stroke-linecap="round" />
                                     </svg>
 
-                                    انجام شده در:
+                                    Completed at:
                                     {{ $task->completed_at->format('Y-m-d H:i:s') }}
 
                                 </span>
