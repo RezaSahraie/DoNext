@@ -15,22 +15,23 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', function () {
     return view('welcome');
 });
-Route::middleware('auth')->group(function () {
 
+Route::middleware('auth')->group(function () {
     Route::get('/dashboard', Dashboard::class)->name('dashboard');
-    // UI-only pages. Backend logic will be added later.
     Route::get('/tasks', Tasks::class)->name('tasks');
     Route::get('/calendar', Calendar::class)->name('calendar');
     Route::get('/categories', Categories::class)->name('categories');
     Route::get('/profile', Profile::class)->name('profile');
 });
 
+Route::middleware('guest')->group(function () {
+    Route::get('/login', Login::class)->name('login');
+    Route::get('/register', Register::class)->name('register');
+    Route::get('/forgot-password', ForgotPassword::class)->name('password.request');
+    Route::get('/forgot-password/{token}', ResetPassword::class)->name('password.reset');
+});
 
-Route::get('/login', Login::class)->middleware('guest')->name('login');
-Route::get('/register', Register::class)->name('register');
-
-
-Route::post('/logout', function() {
+Route::post('/logout', function () {
     Auth::logout();
 
     request()->session()->invalidate();
@@ -38,8 +39,3 @@ Route::post('/logout', function() {
 
     return redirect()->route('login');
 })->middleware('auth')->name('logout');
-
-
-Route::get('/forgot-password', ForgotPassword::class)->middleware('guest')->name('password.request');
-
-Route::get('/forgot-password/{token}', ResetPassword::class)->middleware('guest')->name('password.reset');
