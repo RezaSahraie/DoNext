@@ -5,6 +5,7 @@ namespace App\Livewire;
 use App\Models\Category;
 use App\Models\Task;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Validation\Rule;
 use Livewire\Attributes\Layout;
 use Livewire\Attributes\On;
 use Livewire\Component;
@@ -12,11 +13,6 @@ use Livewire\Component;
 #[Layout('layouts.app')]
 class Tasks extends Component
 {
-    /**
-     * ======================
-     * properties
-     * ======================
-     */
     public string $title = '';
     public string $description = '';
     public string $priority = 'medium';
@@ -24,7 +20,6 @@ class Tasks extends Component
     public ?int $category_id = null;
 
     public ?int $editingTaskId = null;
-
     public string $editTitle = '';
     public string $editDescription = '';
     public string $editPriority = 'medium';
@@ -34,82 +29,54 @@ class Tasks extends Component
     public string $search = '';
     public string $filter = 'all';
 
-    /**
-     * =====================
-     * Create Task
-     * =====================
-     */
+    private function categoryRule(): Rule
+    {
+        return Rule::exists('categories', 'id')->where(fn ($query) =>
+            $query->where('user_id', Auth::id())
+        );
+    }
 
     public function createTask(): void
     {
-        //validating inputs
-        $this->validate([
+        $validated = $this->validate([
             'title' => ['required', 'string', 'max:255'],
             'description' => ['nullable', 'string'],
             'priority' => ['required', 'in:low,medium,high'],
             'due_date' => ['nullable', 'date'],
-            'category_id' => ['nullable', 'integer', 'exists:categories,id'],
-        ]);
-        //Creating task
-        Task::create([
-            'user_id' => Auth::id(),
-            'title' => $this->title,
-            'description' => $this->description,
-            'priority' => $this->priority,
-            'due_date' => $this->due_date,
-            'status' => 'pending',
-            'category_id' => $this->category_id,
-        ]);
-        //reseting inputs
-        $this->reset([
-            'title',
-            'description',
-            'due_date',
-            'category_id',
+            'category_id' => ['nullable', 'integer', $this->categoryRule()],
         ]);
 
+        Task::create([
+            'user_id' => Auth::id(),
+            'title' => $validated['title'],
+            'description' => $validated['description'],
+            'priority' => $validated['priority'],
+            'due_date' => $validated['due_date'],
+            'status' => 'pending',
+            'category_id' => $validated['category_id'],
+        ]);
+
+        $this->reset(['title', 'description', 'due_date', 'category_id']);
         $this->priority = 'medium';
 
         $this->dispatch('task-created');
-        $this->dispatch(
-            'toast',
-            type: 'success',
-            message: 'Task created successfully.'
-        );
-        session()->flash('success', 'Task created successfully.');
+        $this->dispatch('toast', type: 'success', message: 'Task created successfully.');
     }
 
-    /**
-     * ==================
-     * Changing status of Task
-     * ==================
-     */
     public function toggleTask(int $taskId): void
     {
-        //finding task
-        $task = Task::where('id', $taskId)->where('user_id', Auth::id())->firstOrFail();
+        $task = Task::whereKey($taskId)->where('user_id', Auth::id())->firstOrFail();
 
         if ($task->status === 'completed') {
-            //changing completed status to pending status
-            $task->update([
-                'status' => 'pending',
-                'completed_at' => null,
-            ]);
-
+            $task->update(['status' => 'pending', 'completed_at' => null]);
             $this->dispatch('toast', type: 'success', message: 'Task marked as pending.');
-
             return;
         }
-        //changing pending status to completed status
+
         $task->update(['status' => 'completed', 'completed_at' => now()]);
         $this->dispatch('toast', type: 'success', message: 'Task completed successfully.');
     }
 
-    /**
-     * ================
-     * Deleting Task
-     * ================
-     */
     #[On('delete-task')]
     public function confirmDeleteTask(int $taskId): void
     {
@@ -118,61 +85,48 @@ class Tasks extends Component
 
     public function deleteTask(int $taskId): void
     {
-        $task = Task::where('id', $taskId)->where('user_id', Auth::id())->firstOrFail();
-
+        $task = Task::whereKey($taskId)->where('user_id', Auth::id())->firstOrFail();
         $task->delete();
-
         $this->dispatch('toast', type: 'success', message: 'Task deleted successfully.');
     }
 
-    /**
-     * ===============
-     * finding Task for edit form
-     * ===============
-     */
     public function editTask(int $taskId): void
     {
-
-        $task = Task::where('user_id', Auth::id())
-            ->findOrFail($taskId);
+        $task = Task::whereKey($taskId)->where('user_id', Auth::id())->firstOrFail();
 
         $this->editingTaskId = $task->id;
         $this->editTitle = $task->title;
         $this->editDescription = $task->description ?? '';
-        $this->editPriority = $task->priority;
+        $this->editPriority = $task->priority ?: 'medium';
         $this->editDueDate = $task->due_date?->format('Y-m-d');
         $this->editCategoryId = $task->category_id;
 
+        $this->resetValidation();
         $this->dispatch('open-edit-task-modal');
     }
 
-    /**
-     * =================
-     * Editing Task
-     * =================
-     */
     public function updateTask(): void
     {
-        //validating inputs
-        $this->validate([
+        $validated = $this->validate([
             'editTitle' => ['required', 'string', 'max:255'],
             'editDescription' => ['nullable', 'string'],
             'editPriority' => ['required', 'in:low,medium,high'],
             'editDueDate' => ['nullable', 'date'],
-            'editCategoryId' => ['nullable', 'integer', 'exists:categories,id'],
+            'editCategoryId' => ['nullable', 'integer', $this->categoryRule()],
         ]);
-        //finding task
-        $task = Task::where('user_id', Auth::id())
-            ->findOrFail($this->editingTaskId);
-        //updating task & saving new data
+
+        $task = Task::whereKey($this->editingTaskId)
+            ->where('user_id', Auth::id())
+            ->firstOrFail();
+
         $task->update([
-            'title' => $this->editTitle,
-            'description' => $this->editDescription,
-            'priority' => $this->editPriority,
-            'due_date' => $this->editDueDate,
-            'category_id' => $this->editCategoryId,
+            'title' => $validated['editTitle'],
+            'description' => $validated['editDescription'],
+            'priority' => $validated['editPriority'],
+            'due_date' => $validated['editDueDate'],
+            'category_id' => $validated['editCategoryId'],
         ]);
-        //reseting inputs
+
         $this->reset([
             'editingTaskId',
             'editTitle',
@@ -180,28 +134,24 @@ class Tasks extends Component
             'editDueDate',
             'editCategoryId',
         ]);
-
         $this->editPriority = 'medium';
 
         $this->dispatch('close-edit-task-modal');
-
-        $this->dispatch('toast', [
-            'message' => 'Task updated successfully.',
-            'type' => 'success',
-        ]);
+        $this->dispatch('toast', type: 'success', message: 'Task updated successfully.');
     }
 
-    /**
-     * ==============
-     * render
-     * ==============
-     */
+    public function updatedSearch(): void
+    {
+        // Reset pagination/filter UI state when search changes if pagination is added later.
+        $this->resetValidation();
+    }
+
     public function render()
     {
-        //Creating query of user's tasks
-        $query = Task::query()->where('user_id', Auth::id())->with('category');
+        $query = Task::query()
+            ->where('user_id', Auth::id())
+            ->with('category');
 
-        //search
         if ($this->search !== '') {
             $query->where(function ($query) {
                 $query->where('title', 'like', '%' . $this->search . '%')
@@ -209,34 +159,25 @@ class Tasks extends Component
             });
         }
 
-        // Filter
         match ($this->filter) {
             'pending', 'completed' => $query->where('status', $this->filter),
             'today' => $query->whereDate('due_date', today()),
             default => null,
         };
 
-        //finding tasks of user & sorting by status,priority and due_date
         $tasks = $query
-            ->orderByRaw("
-        CASE
-            WHEN status = 'completed' THEN 1
-            ELSE 0
-        END
-        ")
-            ->orderByRaw("
-        CASE
-            WHEN priority = 'high' THEN 1
-            WHEN priority = 'medium' THEN 2
-            WHEN priority = 'low' THEN 3
-            ELSE 4
-        END
-        ")->orderBy('due_date', 'asc')->get();
+            ->orderByRaw("CASE WHEN status = 'completed' THEN 1 ELSE 0 END")
+            ->orderByRaw("CASE
+                WHEN priority = 'high' THEN 1
+                WHEN priority = 'medium' THEN 2
+                WHEN priority = 'low' THEN 3
+                ELSE 4
+            END")
+            ->orderBy('due_date')
+            ->get();
 
         $categories = Category::where('user_id', Auth::id())->orderBy('name')->get();
-        return view('livewire.tasks', [
-            'tasks' => $tasks,
-            'categories' => $categories,
-        ]);
+
+        return view('livewire.tasks', compact('tasks', 'categories'));
     }
 }
