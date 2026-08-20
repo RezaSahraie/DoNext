@@ -1,4 +1,5 @@
 <header x-data="{ mobileMenu: false, notificationsOpen: false, userMenuOpen: false, lang: localStorage.getItem('language') || 'fa' }"
+    x-init="window.addEventListener('donext-language-changed', () => lang = window.DoNextLanguage())"
     class="sticky top-0 z-40 border-b border-slate-200/80 bg-white/85 backdrop-blur-xl dark:border-slate-800/80 dark:bg-slate-950/85">
     <div class="flex h-20 items-center justify-between px-4 sm:px-6 lg:px-8">
         <div class="flex items-center gap-3">
@@ -29,8 +30,7 @@
 
             <button type="button" @click="notificationsOpen = !notificationsOpen"
                 class="relative grid h-10 w-10 place-items-center rounded-xl border border-slate-200 text-slate-600 hover:bg-slate-100 dark:border-slate-700 dark:text-slate-300 dark:hover:bg-slate-800"
-                aria-label="Notifications">
-                ♢
+                aria-label="Notifications">♢
                 <span class="absolute end-2 top-2 h-2 w-2 rounded-full bg-indigo-500 ring-2 ring-white dark:ring-slate-950"></span>
             </button>
 
@@ -41,9 +41,7 @@
                     <div class="grid h-9 w-9 place-items-center rounded-xl bg-gradient-to-br from-indigo-500 to-violet-600 text-sm font-black text-white">
                         {{ mb_strtoupper(mb_substr(auth()->user()->name ?? 'U', 0, 1)) }}
                     </div>
-                    <div class="hidden text-start sm:block">
-                        <p class="text-xs font-bold">{{ auth()->user()->name ?? 'User' }}</p>
-                    </div>
+                    <div class="hidden text-start sm:block"><p class="text-xs font-bold">{{ auth()->user()->name ?? 'User' }}</p></div>
                     <span class="hidden text-xs text-slate-400 sm:block" :class="userMenuOpen ? 'rotate-180' : ''">⌄</span>
                 </button>
 
@@ -51,14 +49,14 @@
                     class="absolute end-0 top-14 z-50 w-56 overflow-hidden rounded-2xl border border-slate-200 bg-white p-2 shadow-2xl dark:border-slate-800 dark:bg-slate-900">
                     <a href="{{ url('/profile') }}" @click="userMenuOpen = false"
                         class="flex items-center gap-3 rounded-xl px-3 py-2.5 text-sm font-bold hover:bg-slate-50 dark:hover:bg-slate-800">
-                        ◎ <span>پروفایل</span>
+                        ◎ <span x-show="lang === 'fa'">پروفایل</span><span x-show="lang === 'en'">Profile</span>
                     </a>
                     <div class="my-1 border-t border-slate-100 dark:border-slate-800"></div>
                     <form method="POST" action="{{ route('logout') }}">
                         @csrf
                         <button type="submit"
                             class="flex w-full items-center gap-3 rounded-xl px-3 py-2.5 text-sm font-bold text-red-600 hover:bg-red-50 dark:text-red-400 dark:hover:bg-red-500/10">
-                            ↪ <span>خروج</span>
+                            ↪ <span x-show="lang === 'fa'">خروج</span><span x-show="lang === 'en'">Logout</span>
                         </button>
                     </form>
                 </div>
@@ -85,12 +83,4 @@
             @endforeach
         </nav>
     </div>
-
-    <script>
-        window.addEventListener('donext-language-changed', function () {
-            document.querySelectorAll('[x-data]').forEach(function (el) {
-                if (el.__x) return;
-            });
-        });
-    </script>
 </header>
