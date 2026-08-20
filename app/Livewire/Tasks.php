@@ -2,6 +2,7 @@
 
 namespace App\Livewire;
 
+use App\Models\Category;
 use App\Models\Task;
 use Illuminate\Support\Facades\Auth;
 use Livewire\Attributes\Layout;
@@ -20,6 +21,7 @@ class Tasks extends Component
     public string $description = '';
     public string $priority = 'medium';
     public ?string $due_date = null;
+    public ?int $category_id = null;
 
     public ?int $editingTaskId = null;
 
@@ -46,6 +48,7 @@ class Tasks extends Component
             'description' => ['nullable', 'string'],
             'priority' => ['required', 'in:low,medium,high'],
             'due_date' => ['nullable', 'date'],
+            'category_id' => ['nullable', 'integer', 'exists:categories,id'],
         ]);
         //Creating task
         Task::create([
@@ -55,12 +58,14 @@ class Tasks extends Component
             'priority' => $this->priority,
             'due_date' => $this->due_date,
             'status' => 'pending',
+            'category_id' => $this->category_id,
         ]);
         //reseting inputs
         $this->reset([
             'title',
             'description',
             'due_date',
+            'category_id',
         ]);
 
         $this->priority = 'medium';
@@ -228,8 +233,10 @@ class Tasks extends Component
         END
         ")->orderBy('due_date', 'asc')->get();
 
+        $categories = Category::where('user_id', Auth::id())->orderBy('name')->get();
         return view('livewire.tasks', [
             'tasks' => $tasks,
+            'categories' => $categories,
         ]);
     }
 }

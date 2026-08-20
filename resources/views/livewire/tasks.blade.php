@@ -545,6 +545,30 @@
 
                 </div>
 
+                {{-- Category --}}
+                <div>
+                    <label for="category_id" class="block text-sm font-bold">
+                        دسته‌بندی
+                    </label>
+
+                    <select id="category_id" wire:model="category_id"
+                        class="mt-2 h-12 w-full rounded-xl border border-slate-200 bg-white px-4 text-sm dark:border-slate-700 dark:bg-slate-900 dark:text-white">
+
+                        <option value="">بدون دسته‌بندی</option>
+
+                        @foreach ($categories as $category)
+                            <option value="{{ $category->id }}">
+                                {{ $category->name }}
+                            </option>
+                        @endforeach
+                    </select>
+
+                    @error('category_id')
+                        <p class="mt-2 text-sm text-red-500">
+                            {{ $message }}
+                        </p>
+                    @enderror
+                </div>
 
                 {{-- Due Date --}}
                 <div>
