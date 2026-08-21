@@ -1,66 +1,207 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
-
 <p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
+  <img src="docs/assets/logo.svg" width="140" alt="DoNext logo" />
 </p>
 
-## About Laravel
+<h1 align="center">DoNext</h1>
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+<p align="center">
+  <b>A fast, focused personal task &amp; calendar manager built with Laravel &amp; Livewire.</b><br/>
+  <sub>یک اپلیکیشن سریع و متمرکز برای مدیریت کارها و تقویم شخصی، ساخته‌شده با Laravel و Livewire</sub>
+</p>
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+<p align="center">
+  <img src="https://img.shields.io/badge/PHP-8.2%2B-777BB4?logo=php&logoColor=white" alt="PHP 8.2+"/>
+  <img src="https://img.shields.io/badge/Laravel-12-FF2D20?logo=laravel&logoColor=white" alt="Laravel 12"/>
+  <img src="https://img.shields.io/badge/Livewire-3.8-4E56A6?logo=livewire&logoColor=white" alt="Livewire 3.8"/>
+  <img src="https://img.shields.io/badge/Tailwind_CSS-4-06B6D4?logo=tailwindcss&logoColor=white" alt="Tailwind CSS 4"/>
+  <img src="https://img.shields.io/badge/License-MIT-informational" alt="License MIT"/>
+</p>
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+<p align="center">
+  <a href="#-english">🇬🇧 English</a> •
+  <a href="#-فارسی">🇮🇷 فارسی</a>
+</p>
 
-## Learning Laravel
+---
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+## 🇬🇧 English
 
-You may also try the [Laravel Bootcamp](https://bootcamp.laravel.com), where you will be guided through building a modern Laravel application from scratch.
+**DoNext** is a clean, no-nonsense task manager for people who just want to plan their day and get things done. It pairs a task list with a full calendar view, color-coded categories, and a dashboard that actually shows you how your week is going — all in a fast, reactive Livewire interface with no page reloads.
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+### ✨ Features
 
-## Laravel Sponsors
+| | |
+|---|---|
+| 📊 **Dashboard** | Total / completed / today's tasks, completion rate, upcoming tasks, and a 7-day completion bar chart |
+| ✅ **Tasks** | Create, edit, complete, and delete tasks with priority (low/medium/high), due dates, and categories |
+| 🔍 **Search & filters** | Instantly search tasks and filter by all / pending / completed / due today |
+| 📅 **Calendar** | Full month view with tasks per day, quick-add for any date, and one-click completion toggling |
+| 🏷️ **Categories** | Custom categories with colors and icons, plus a per-category task count and view |
+| 👤 **Profile** | Editable name/email and a personal completion-rate summary |
+| 🔐 **Authentication** | Login, registration, and forgot/reset password flows out of the box |
+| ⚡ **Reactive UI** | Built entirely with Livewire — instant interactions, zero custom JS framework needed |
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the [Laravel Partners program](https://partners.laravel.com).
+### 🛠️ Tech Stack
 
-### Premium Partners
+- **Backend:** PHP 8.2+, Laravel 12
+- **Frontend:** Livewire 3, Tailwind CSS 4, Vite
+- **Database:** SQLite by default (any Laravel-supported DB works)
+- **Testing:** PHPUnit
 
-- **[Vehikl](https://vehikl.com/)**
-- **[Tighten Co.](https://tighten.co)**
-- **[WebReinvent](https://webreinvent.com/)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel/)**
-- **[Cyber-Duck](https://cyber-duck.co.uk)**
-- **[DevSquad](https://devsquad.com/hire-laravel-developers)**
-- **[Jump24](https://jump24.co.uk)**
-- **[Redberry](https://redberry.international/laravel/)**
-- **[Active Logic](https://activelogic.com)**
-- **[byte5](https://byte5.de)**
-- **[OP.GG](https://op.gg)**
+### 🚀 Getting Started
 
-## Contributing
+**Requirements:** PHP ≥ 8.2, Composer, Node.js ≥ 18, npm
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+```bash
+# 1. Clone the repository
+git clone https://github.com/RezaSahraie/DoNext.git
+cd DoNext
 
-## Code of Conduct
+# 2. Install dependencies
+composer install
+npm install
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+# 3. Configure the environment
+cp .env.example .env
+php artisan key:generate
 
-## Security Vulnerabilities
+# 4. Set up the database (SQLite by default)
+touch database/database.sqlite
+php artisan migrate
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+# 5. Run the app (server + queue + vite, all at once)
+composer run dev
+```
 
-## License
+Then open **http://localhost:8000** and create an account to get started.
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+### 📁 Project Structure
+
+```
+app/
+ ├─ Livewire/         # Dashboard, Tasks, Calendar, Categories, Profile, Auth
+ └─ Models/           # User, Task, Category
+database/
+ └─ migrations/       # tasks & categories schema
+resources/views/
+ └─ livewire/         # Blade views for every component
+routes/web.php        # App routes
+```
+
+### 🧪 Running Tests
+
+```bash
+php artisan test
+```
+
+### 🗺️ Roadmap
+
+- [ ] Recurring tasks
+- [ ] Task reminders / notifications
+- [ ] Drag-and-drop reordering
+- [ ] Dark mode
+- [ ] Team / shared workspaces
+
+### 🤝 Contributing
+
+Contributions are welcome! Feel free to open an issue or submit a pull request.
+
+### 📄 License
+
+Released under the MIT License.
+
+<br/>
+
+---
+
+## 🇮🇷 فارسی
+
+<div dir="rtl">
+
+**DoNext** یک اپلیکیشن ساده و بدون شلوغی برای مدیریت کارهای روزانه است؛ برای کسانی که فقط می‌خواهند روزشان را برنامه‌ریزی کنند و کارها را پیش ببرند. این ابزار یک لیست تسک را با نمای کامل تقویم، دسته‌بندی‌های رنگی، و یک داشبورد که واقعاً وضعیت هفته را نشان می‌دهد ترکیب می‌کند — همه در یک رابط کاربری واکنش‌گرا با Livewire و بدون رفرش صفحه.
+
+### ✨ امکانات
+
+| | |
+|---|---|
+| 📊 **داشبورد** | تعداد کل / تکمیل‌شده / کارهای امروز، درصد تکمیل، کارهای پیش‌رو و نمودار میله‌ای تکمیل ۷ روز اخیر |
+| ✅ **مدیریت کارها (Tasks)** | ساخت، ویرایش، تکمیل و حذف تسک‌ها همراه با اولویت (کم/متوسط/زیاد)، تاریخ سررسید و دسته‌بندی |
+| 🔍 **جست‌وجو و فیلتر** | جست‌وجوی آنی تسک‌ها و فیلتر بر اساس همه / در حال انجام / تکمیل‌شده / سررسید امروز |
+| 📅 **تقویم** | نمای کامل ماهانه با نمایش تسک‌های هر روز، افزودن سریع تسک برای هر تاریخ، و تیک‌زدن سریع کارها |
+| 🏷️ **دسته‌بندی‌ها** | دسته‌بندی‌های سفارشی با رنگ و آیکون دلخواه، همراه با شمارش و نمایش تسک‌های هر دسته |
+| 👤 **پروفایل** | ویرایش نام و ایمیل و مشاهده خلاصه‌ای شخصی از درصد تکمیل کارها |
+| 🔐 **احراز هویت** | ورود، ثبت‌نام و فرآیند فراموشی/بازیابی رمز عبور به‌صورت آماده |
+| ⚡ **رابط کاربری واکنش‌گرا** | ساخته‌شده کاملاً با Livewire — تعامل آنی بدون نیاز به فریم‌ورک جاوااسکریپت جداگانه |
+
+### 🛠️ فناوری‌های استفاده‌شده
+
+- **بک‌اند:** PHP 8.2+‏، Laravel 12
+- **فرانت‌اند:** Livewire 3، Tailwind CSS 4، Vite
+- **دیتابیس:** به‌صورت پیش‌فرض SQLite (هر دیتابیس پشتیبانی‌شده توسط Laravel قابل استفاده است)
+- **تست:** PHPUnit
+
+### 🚀 شروع سریع
+
+**پیش‌نیازها:** PHP نسخه ۸.۲ به بالا، Composer، Node.js نسخه ۱۸ به بالا، npm
+
+```bash
+# ۱. کلون کردن ریپازیتوری
+git clone https://github.com/RezaSahraie/DoNext.git
+cd DoNext
+
+# ۲. نصب پکیج‌ها
+composer install
+npm install
+
+# ۳. تنظیم فایل محیطی
+cp .env.example .env
+php artisan key:generate
+
+# ۴. راه‌اندازی دیتابیس (پیش‌فرض SQLite)
+touch database/database.sqlite
+php artisan migrate
+
+# ۵. اجرای پروژه (سرور + صف + ویت، همزمان)
+composer run dev
+```
+
+سپس آدرس **http://localhost:8000** را باز کنید و یک حساب کاربری بسازید.
+
+### 📁 ساختار پروژه
+
+```
+app/
+ ├─ Livewire/         # Dashboard, Tasks, Calendar, Categories, Profile, Auth
+ └─ Models/           # User, Task, Category
+database/
+ └─ migrations/       # ساختار جدول تسک‌ها و دسته‌بندی‌ها
+resources/views/
+ └─ livewire/         # ویوهای Blade هر کامپوننت
+routes/web.php        # مسیرهای اپلیکیشن
+```
+
+### 🧪 اجرای تست‌ها
+
+```bash
+php artisan test
+```
+
+### 🗺️ نقشه راه
+
+- [ ] تسک‌های تکرارشونده
+- [ ] یادآوری / اعلان برای تسک‌ها
+- [ ] جابه‌جایی تسک‌ها با درگ‌اند‌دراپ
+- [ ] حالت تاریک (Dark mode)
+- [ ] فضای کاری تیمی / اشتراکی
+
+### 🤝 مشارکت
+
+مشارکت شما خوش‌آمد است! برای گزارش باگ یا پیشنهاد، یک issue باز کنید یا pull request بفرستید.
+
+### 📄 مجوز
+
+منتشرشده تحت مجوز MIT.
+
+</div>
+
+<p align="center"><sub>Made with ❤️ using Laravel &amp; Livewire</sub></p>
