@@ -29,7 +29,7 @@ class Tasks extends Component
     public string $search = '';
     public string $filter = 'all';
 
-    private function categoryRule(): Rule
+    private function categoryRule()
     {
         return Rule::exists('categories', 'id')->where(fn ($query) =>
             $query->where('user_id', Auth::id())
