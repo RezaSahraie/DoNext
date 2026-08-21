@@ -167,7 +167,7 @@ class Calendar extends Component
                 ->get();
         }
 
-        $monthTitle = $startOfMonth->translatedFormat('F Y');
+        $monthTitle = $startOfMonth->format('F Y');
 
         return view('livewire.calendar', compact('cells', 'monthTitle', 'selectedTasks'));
     }

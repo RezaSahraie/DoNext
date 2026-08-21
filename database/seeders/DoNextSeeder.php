@@ -5,8 +5,8 @@ namespace Database\Seeders;
 use App\Models\Category;
 use App\Models\Task;
 use App\Models\User;
-//use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Facades\Hash;
 
 class DoNextSeeder extends Seeder
 {
@@ -15,19 +15,23 @@ class DoNextSeeder extends Seeder
      */
     public function run(): void
     {
+        // Skip seeding if data already exists (makes db:seed idempotent)
+        if (User::where('email', 'test@donext.test')->exists()) {
+            return;
+        }
+
         $user = User::factory()->create([
             'name' => 'Test User',
-            'email' => 'test@donext.test'
+            'email' => 'test@donext.test',
+            'password' => Hash::make('12345678'),
         ]);
 
         $categories = collect(['Work', 'Learning', 'Personal'])
-            ->map(function (string $name) use ($user) {
-                return Category::factory()->create([
-                    'user_id' => $user->id,
-                    'name' => $name,
-            ]);
-        });
-        
+            ->map(fn (string $name) => Category::factory()->create([
+                'user_id' => $user->id,
+                'name' => $name,
+                
+            ]));
 
         foreach ($categories as $category) {
             Task::factory()
@@ -36,14 +40,7 @@ class DoNextSeeder extends Seeder
                 ->create([
                     'user_id' => $user->id,
                     'category_id' => $category->id,
-            ]);
-
-            Task::factory()
-                ->inProgress()
-                ->create([
-                    'user_id' => $user->id,
-                    'category_id' => $category->id,
-            ]);
+                ]);
 
             Task::factory()
                 ->completed()
@@ -51,7 +48,7 @@ class DoNextSeeder extends Seeder
                 ->create([
                     'user_id' => $user->id,
                     'category_id' => $category->id,
-            ]);
+                ]);
         }
 
         Task::factory()
@@ -60,6 +57,6 @@ class DoNextSeeder extends Seeder
             ->create([
                 'user_id' => $user->id,
                 'category_id' => null,
-        ]);
+            ]);
     }
 }
