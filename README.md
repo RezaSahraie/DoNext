@@ -151,16 +151,6 @@ php artisan test
 
 ---
 
-## 🗺️ Roadmap
-
-- [ ] Recurring tasks
-- [ ] Task reminders / notifications
-- [ ] Drag-and-drop reordering
-- [ ] Dark mode
-- [ ] Team / shared workspaces
-
----
-
 ## 🤝 Contributing
 
 Contributions are welcome!  
