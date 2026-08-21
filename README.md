@@ -1,12 +1,11 @@
 <p align="center">
-  <img src="docs/assets/logo.svg" width="140" alt="DoNext logo" />
+  <img src="docs/assets/logo.svg" width="120" alt="DoNext logo" />
 </p>
 
 <h1 align="center">DoNext</h1>
 
 <p align="center">
-  <b>A fast, focused personal task &amp; calendar manager built with Laravel &amp; Livewire.</b><br/>
-  <sub>یک اپلیکیشن سریع و متمرکز برای مدیریت کارها و تقویم شخصی، ساخته‌شده با Laravel و Livewire</sub>
+  <b>A fast, focused personal task &amp; calendar manager built with Laravel &amp; Livewire.</b>
 </p>
 
 <p align="center">
@@ -18,17 +17,14 @@
 </p>
 
 <p align="center">
-  <a href="#-english">🇬🇧 English</a> •
-  <a href="#-فارسی">🇮🇷 فارسی</a>
+  <b>🇬🇧 English</b> &nbsp;|&nbsp; <a href="README.fa.md">🇮🇷 فارسی</a>
 </p>
 
 ---
 
-## 🇬🇧 English
-
 **DoNext** is a clean, no-nonsense task manager for people who just want to plan their day and get things done. It pairs a task list with a full calendar view, color-coded categories, and a dashboard that actually shows you how your week is going — all in a fast, reactive Livewire interface with no page reloads.
 
-### ✨ Features
+## ✨ Features
 
 | | |
 |---|---|
@@ -41,14 +37,14 @@
 | 🔐 **Authentication** | Login, registration, and forgot/reset password flows out of the box |
 | ⚡ **Reactive UI** | Built entirely with Livewire — instant interactions, zero custom JS framework needed |
 
-### 🛠️ Tech Stack
+## 🛠️ Tech Stack
 
 - **Backend:** PHP 8.2+, Laravel 12
 - **Frontend:** Livewire 3, Tailwind CSS 4, Vite
 - **Database:** SQLite by default (any Laravel-supported DB works)
 - **Testing:** PHPUnit
 
-### 🚀 Getting Started
+## 🚀 Getting Started
 
 **Requirements:** PHP ≥ 8.2, Composer, Node.js ≥ 18, npm
 
@@ -75,7 +71,7 @@ composer run dev
 
 Then open **http://localhost:8000** and create an account to get started.
 
-### 📁 Project Structure
+## 📁 Project Structure
 
 ```
 app/
@@ -88,13 +84,13 @@ resources/views/
 routes/web.php        # App routes
 ```
 
-### 🧪 Running Tests
+## 🧪 Running Tests
 
 ```bash
 php artisan test
 ```
 
-### 🗺️ Roadmap
+## 🗺️ Roadmap
 
 - [ ] Recurring tasks
 - [ ] Task reminders / notifications
@@ -102,106 +98,12 @@ php artisan test
 - [ ] Dark mode
 - [ ] Team / shared workspaces
 
-### 🤝 Contributing
+## 🤝 Contributing
 
 Contributions are welcome! Feel free to open an issue or submit a pull request.
 
-### 📄 License
+## 📄 License
 
 Released under the MIT License.
-
-<br/>
-
----
-
-## 🇮🇷 فارسی
-
-<div dir="rtl">
-
-**DoNext** یک اپلیکیشن ساده و بدون شلوغی برای مدیریت کارهای روزانه است؛ برای کسانی که فقط می‌خواهند روزشان را برنامه‌ریزی کنند و کارها را پیش ببرند. این ابزار یک لیست تسک را با نمای کامل تقویم، دسته‌بندی‌های رنگی، و یک داشبورد که واقعاً وضعیت هفته را نشان می‌دهد ترکیب می‌کند — همه در یک رابط کاربری واکنش‌گرا با Livewire و بدون رفرش صفحه.
-
-### ✨ امکانات
-
-| | |
-|---|---|
-| 📊 **داشبورد** | تعداد کل / تکمیل‌شده / کارهای امروز، درصد تکمیل، کارهای پیش‌رو و نمودار میله‌ای تکمیل ۷ روز اخیر |
-| ✅ **مدیریت کارها (Tasks)** | ساخت، ویرایش، تکمیل و حذف تسک‌ها همراه با اولویت (کم/متوسط/زیاد)، تاریخ سررسید و دسته‌بندی |
-| 🔍 **جست‌وجو و فیلتر** | جست‌وجوی آنی تسک‌ها و فیلتر بر اساس همه / در حال انجام / تکمیل‌شده / سررسید امروز |
-| 📅 **تقویم** | نمای کامل ماهانه با نمایش تسک‌های هر روز، افزودن سریع تسک برای هر تاریخ، و تیک‌زدن سریع کارها |
-| 🏷️ **دسته‌بندی‌ها** | دسته‌بندی‌های سفارشی با رنگ و آیکون دلخواه، همراه با شمارش و نمایش تسک‌های هر دسته |
-| 👤 **پروفایل** | ویرایش نام و ایمیل و مشاهده خلاصه‌ای شخصی از درصد تکمیل کارها |
-| 🔐 **احراز هویت** | ورود، ثبت‌نام و فرآیند فراموشی/بازیابی رمز عبور به‌صورت آماده |
-| ⚡ **رابط کاربری واکنش‌گرا** | ساخته‌شده کاملاً با Livewire — تعامل آنی بدون نیاز به فریم‌ورک جاوااسکریپت جداگانه |
-
-### 🛠️ فناوری‌های استفاده‌شده
-
-- **بک‌اند:** PHP 8.2+‏، Laravel 12
-- **فرانت‌اند:** Livewire 3، Tailwind CSS 4، Vite
-- **دیتابیس:** به‌صورت پیش‌فرض SQLite (هر دیتابیس پشتیبانی‌شده توسط Laravel قابل استفاده است)
-- **تست:** PHPUnit
-
-### 🚀 شروع سریع
-
-**پیش‌نیازها:** PHP نسخه ۸.۲ به بالا، Composer، Node.js نسخه ۱۸ به بالا، npm
-
-```bash
-# ۱. کلون کردن ریپازیتوری
-git clone https://github.com/RezaSahraie/DoNext.git
-cd DoNext
-
-# ۲. نصب پکیج‌ها
-composer install
-npm install
-
-# ۳. تنظیم فایل محیطی
-cp .env.example .env
-php artisan key:generate
-
-# ۴. راه‌اندازی دیتابیس (پیش‌فرض SQLite)
-touch database/database.sqlite
-php artisan migrate
-
-# ۵. اجرای پروژه (سرور + صف + ویت، همزمان)
-composer run dev
-```
-
-سپس آدرس **http://localhost:8000** را باز کنید و یک حساب کاربری بسازید.
-
-### 📁 ساختار پروژه
-
-```
-app/
- ├─ Livewire/         # Dashboard, Tasks, Calendar, Categories, Profile, Auth
- └─ Models/           # User, Task, Category
-database/
- └─ migrations/       # ساختار جدول تسک‌ها و دسته‌بندی‌ها
-resources/views/
- └─ livewire/         # ویوهای Blade هر کامپوننت
-routes/web.php        # مسیرهای اپلیکیشن
-```
-
-### 🧪 اجرای تست‌ها
-
-```bash
-php artisan test
-```
-
-### 🗺️ نقشه راه
-
-- [ ] تسک‌های تکرارشونده
-- [ ] یادآوری / اعلان برای تسک‌ها
-- [ ] جابه‌جایی تسک‌ها با درگ‌اند‌دراپ
-- [ ] حالت تاریک (Dark mode)
-- [ ] فضای کاری تیمی / اشتراکی
-
-### 🤝 مشارکت
-
-مشارکت شما خوش‌آمد است! برای گزارش باگ یا پیشنهاد، یک issue باز کنید یا pull request بفرستید.
-
-### 📄 مجوز
-
-منتشرشده تحت مجوز MIT.
-
-</div>
 
 <p align="center"><sub>Made with ❤️ using Laravel &amp; Livewire</sub></p>
