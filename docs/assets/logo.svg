@@ -1,0 +1,35 @@
+<svg width="240" height="240" viewBox="0 0 240 240" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="tile" x1="0" y1="0" x2="240" y2="240" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#4F46E5"/>
+      <stop offset="50%" stop-color="#8B5CF6"/>
+      <stop offset="100%" stop-color="#D946EF"/>
+    </linearGradient>
+    <linearGradient id="glow" x1="0" y1="0" x2="0" y2="240" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#FFFFFF" stop-opacity="0.28"/>
+      <stop offset="45%" stop-color="#FFFFFF" stop-opacity="0"/>
+    </linearGradient>
+    <linearGradient id="mark" x1="60" y1="80" x2="182" y2="168" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#FFFFFF"/>
+      <stop offset="100%" stop-color="#EDE9FE"/>
+    </linearGradient>
+    <filter id="markShadow" x="-40%" y="-40%" width="180%" height="180%">
+      <feDropShadow dx="0" dy="4" stdDeviation="6" flood-color="#3B0764" flood-opacity="0.35"/>
+    </filter>
+  </defs>
+
+  <!-- Tile -->
+  <rect x="4" y="4" width="232" height="232" rx="56" fill="url(#tile)"/>
+  <rect x="4" y="4" width="232" height="232" rx="56" fill="url(#glow)"/>
+
+  <!-- Subtle ring accent -->
+  <rect x="4" y="4" width="232" height="232" rx="56" stroke="#FFFFFF" stroke-opacity="0.14" stroke-width="2"/>
+
+  <!-- Checkmark merging into a forward arrow: "done" -> "next" -->
+  <g filter="url(#markShadow)">
+    <path d="M62 122 L100 160 L120 140"
+          stroke="url(#mark)" stroke-width="20" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+    <path d="M120 140 L166 94 M166 94 L140 94 M166 94 L166 120"
+          stroke="url(#mark)" stroke-width="20" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+  </g>
+</svg>
