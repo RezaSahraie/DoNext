@@ -48,9 +48,9 @@
   <img src="https://raw.githubusercontent.com/RezaSahraie/DoNext/docs-branding-demo/public/images/donext-logo.svg" width="90" alt="DoNext">
 </p>
 
-> نسخه آنلاین پروژه باید پس از Deploy شدن در بخش **Live Demo** قرار بگیرد. لینک جعلی قرار داده نشده است.
-
 **Live Demo:** `Coming soon`
+
+> بعد از Deploy شدن نسخه آنلاین، همین بخش باید با URL واقعی سایت جایگزین شود. لینک جعلی قرار داده نشده است.
 
 ### 🧱 تکنولوژی‌ها
 
@@ -112,6 +112,35 @@ Seeder پروژه یک حساب آزمایشی ایجاد می‌کند:
 
 > این حساب فقط برای Demo و توسعه است و نباید روی محیط واقعی با همین رمز استفاده شود.
 
+### 🌍 استفاده بدون Clone
+
+کاربر نهایی برای استفاده از DoNext **نباید Laravel، PHP، Composer، Node.js یا Git را نصب کند**.
+
+برای این کار باید یک نسخه Production روی Hosting قرار بگیرد و یک URL عمومی داشته باشد. فایل‌های `Dockerfile` و `render.yaml` برای آماده‌سازی این مسیر در repository قرار گرفته‌اند.
+
+#### Deploy با Render
+
+1. وارد Render شوید و GitHub repository را متصل کنید.
+2. Blueprint موجود در `render.yaml` را انتخاب کنید.
+3. سرویس Web و دیتابیس PostgreSQL را ایجاد کنید.
+4. مقدار `APP_URL` را با URL واقعی سرویس تنظیم کنید.
+5. بعد از Deploy، کاربر فقط URL سایت را باز می‌کند؛ هیچ Clone یا نصب محلی لازم نیست.
+
+```text
+User Browser
+     │
+     ▼
+Public DoNext URL
+     │
+     ▼
+Laravel + Livewire
+     │
+     ▼
+PostgreSQL
+```
+
+> برای نسخه واقعی آنلاین، PostgreSQL/MySQL توصیه می‌شود. SQLite برای توسعه محلی مناسب است اما برای نگهداری پایدار داده‌های کاربران گزینه مناسبی برای Hosting عمومی نیست.
+
 ### 📁 ساختار مهم پروژه
 
 ```text
@@ -133,31 +162,9 @@ DoNext/
 │   └── images/
 │       └── donext-logo.svg
 ├── Dockerfile
+├── render.yaml
 └── README.md
 ```
-
-### 🌍 نسخه آنلاین بدون Clone
-
-کاربر نهایی برای استفاده از DoNext **نباید Laravel، PHP، Composer یا Git را نصب کند**.
-
-برای این حالت، پروژه باید روی یک سرویس Hosting اجرا شود و یک URL عمومی داشته باشد. معماری پیشنهادی:
-
-```text
-User Browser
-     │
-     ▼
-Public DoNext URL
-     │
-     ▼
-Laravel + Livewire
-     │
-     ▼
-PostgreSQL / MySQL
-```
-
-فایل `Dockerfile` نیز برای Deploy کردن پروژه روی سرویس‌های Docker-based آماده شده است.
-
-> نکته: SQLite برای توسعه محلی عالی است، اما برای یک نسخه آنلاین واقعی بهتر است PostgreSQL یا MySQL استفاده شود تا داده‌های کاربران پایدار بمانند.
 
 ### 🤝 مشارکت
 
@@ -202,9 +209,9 @@ The goal is to provide a clean workspace where users can create, organize, updat
   <img src="https://raw.githubusercontent.com/RezaSahraie/DoNext/docs-branding-demo/public/images/donext-logo.svg" width="90" alt="DoNext">
 </p>
 
-> The real application URL will be added to **Live Demo** after deployment. No fake URL is used.
-
 **Live Demo:** `Coming soon`
+
+> Replace this placeholder with the real deployed URL after the production deployment is live. No fake URL is used.
 
 ### 🧱 Tech Stack
 
@@ -266,6 +273,31 @@ The project seeder creates a demo account:
 
 > This account is intended for development/demo use only. Do not use this password in production.
 
+### 🌍 Use It Without Cloning
+
+End users should **not need PHP, Laravel, Composer, Node.js or Git** to use DoNext.
+
+The repository includes a `Dockerfile` and `render.yaml` to prepare a hosted production deployment. After the application is deployed and connected to PostgreSQL:
+
+1. Connect the GitHub repository to Render.
+2. Deploy the Blueprint from `render.yaml`.
+3. Set `APP_URL` to the real public service URL.
+4. Open the public URL in a browser.
+5. Users can use the application directly without cloning or installing anything locally.
+
+```text
+User Browser
+     │
+     ▼
+Public DoNext URL
+     │
+     ▼
+Laravel + Livewire
+     │
+     ▼
+PostgreSQL
+```
+
 ### 📁 Project Structure
 
 ```text
@@ -287,31 +319,9 @@ DoNext/
 │   └── images/
 │       └── donext-logo.svg
 ├── Dockerfile
+├── render.yaml
 └── README.md
 ```
-
-### 🌍 Use It Without Cloning
-
-End users should **not need PHP, Laravel, Composer, Node.js or Git** to use DoNext.
-
-The application should be deployed to a hosting provider and exposed through a public URL:
-
-```text
-User Browser
-     │
-     ▼
-Public DoNext URL
-     │
-     ▼
-Laravel + Livewire
-     │
-     ▼
-PostgreSQL / MySQL
-```
-
-A production `Dockerfile` is included for Docker-based hosting.
-
-> SQLite is excellent for local development, but PostgreSQL or MySQL is recommended for a real online deployment so user data remains persistent.
 
 ### 🤝 Contributing
 
