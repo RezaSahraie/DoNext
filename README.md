@@ -1,11 +1,11 @@
 <p align="center">
-  <img src="docs/assets/logo.svg" width="120" alt="DoNext logo" />
+  <img src="docs/assets/logo.svg" width="110" alt="DoNext logo" />
 </p>
 
 <h1 align="center">DoNext</h1>
 
 <p align="center">
-  <b>A fast, focused personal task &amp; calendar manager built with Laravel &amp; Livewire.</b>
+  <strong>A clean, focused task & calendar manager built with Laravel and Livewire.</strong>
 </p>
 
 <p align="center">
@@ -13,97 +13,113 @@
   <img src="https://img.shields.io/badge/Laravel-12-FF2D20?logo=laravel&logoColor=white" alt="Laravel 12"/>
   <img src="https://img.shields.io/badge/Livewire-3.8-4E56A6?logo=livewire&logoColor=white" alt="Livewire 3.8"/>
   <img src="https://img.shields.io/badge/Tailwind_CSS-4-06B6D4?logo=tailwindcss&logoColor=white" alt="Tailwind CSS 4"/>
-  <img src="https://img.shields.io/badge/License-MIT-informational" alt="License MIT"/>
+  <img src="https://img.shields.io/badge/Vite-6-646CFF?logo=vite&logoColor=white" alt="Vite"/>
+  <img src="https://img.shields.io/badge/License-MIT-informational" alt="MIT License"/>
 </p>
 
 <p align="center">
-  <b>🇬🇧 English</b> &nbsp;|&nbsp; <a href="README.fa.md">🇮🇷 فارسی</a>
+  <b>🇬🇧 English</b> &nbsp;·&nbsp; <a href="README.fa.md">🇮🇷 فارسی</a>
 </p>
 
 ---
 
-**DoNext** is a clean, no-nonsense task manager for people who just want to plan their day and get things done. It pairs a task list with a full calendar view, color-coded categories, and a dashboard that actually shows you how your week is going — all in a fast, reactive Livewire interface with no page reloads.
+## 📝 About
+
+**DoNext** is a personal productivity app designed to keep everyday planning simple. It combines task management, categories, a calendar, authentication, profile settings, and a useful dashboard in one responsive interface.
+
+The project is built around **Laravel + Livewire**, so interactions can happen without turning the application into a separate JavaScript SPA.
 
 ## ✨ Features
 
-| | |
-|---|---|
-| 📊 **Dashboard** | Total / completed / today's tasks, completion rate, upcoming tasks, and a 7-day completion bar chart |
-| ✅ **Tasks** | Create, edit, complete, and delete tasks with priority (low/medium/high), due dates, and categories |
-| 🔍 **Search & filters** | Instantly search tasks and filter by all / pending / completed / due today |
-| 📅 **Calendar** | Full month view with tasks per day, quick-add for any date, and one-click completion toggling |
-| 🏷️ **Categories** | Custom categories with colors and icons, plus a per-category task count and view |
-| 👤 **Profile** | Editable name/email and a personal completion-rate summary |
-| 🔐 **Authentication** | Login, registration, and forgot/reset password flows out of the box |
-| ⚡ **Reactive UI** | Built entirely with Livewire — instant interactions, zero custom JS framework needed |
+- 📊 **Dashboard** — task totals, completion rate, today's tasks, upcoming tasks, and weekly progress
+- ✅ **Task management** — create, edit, complete, and delete tasks
+- 🎯 **Priorities** — low, medium, and high priority levels
+- 📅 **Calendar** — monthly calendar with tasks grouped by date
+- 🏷️ **Categories** — custom categories with colors and icons
+- 🔍 **Search & filters** — quickly find tasks and filter by status or due date
+- 👤 **Profile** — manage account information and view completion statistics
+- 🔐 **Authentication** — login, registration, and password recovery
+- ⚡ **Live interactions** — powered by Livewire without a separate frontend framework
+
+## 🖥️ Project Screenshots
+
+> Screenshots will be added here from the running DoNext application so the README only contains real project UI, not mockups or stock images.
 
 ## 🛠️ Tech Stack
 
-- **Backend:** PHP 8.2+, Laravel 12
-- **Frontend:** Livewire 3, Tailwind CSS 4, Vite
-- **Database:** SQLite by default (any Laravel-supported DB works)
-- **Testing:** PHPUnit
-
-## 🚀 Getting Started
-
-**Requirements:** PHP ≥ 8.2, Composer, Node.js ≥ 18, npm
-
-```bash
-# 1. Clone the repository
-git clone https://github.com/RezaSahraie/DoNext.git
-cd DoNext
-
-# 2. Install dependencies
-composer install
-npm install
-
-# 3. Configure the environment
-cp .env.example .env
-php artisan key:generate
-
-# 4. Set up the database (SQLite by default)
-touch database/database.sqlite
-php artisan migrate
-
-# 5. Run the app (server + queue + vite, all at once)
-composer run dev
-```
-
-Then open **http://localhost:8000** and create an account to get started.
+| Layer | Technology |
+|---|---|
+| Backend | PHP 8.2+, Laravel 12 |
+| UI / Components | Livewire 3.8, Blade |
+| Styling | Tailwind CSS 4 |
+| Build Tool | Vite |
+| Database | SQLite by default / Laravel-supported databases |
+| Testing | PHPUnit |
 
 ## 📁 Project Structure
 
-```
+```text
 app/
- ├─ Livewire/         # Dashboard, Tasks, Calendar, Categories, Profile, Auth
- └─ Models/           # User, Task, Category
+├── Livewire/          # Livewire page and UI components
+└── Models/            # Eloquent models
+
 database/
- └─ migrations/       # tasks & categories schema
+└── migrations/        # Database schema
+
 resources/views/
- └─ livewire/         # Blade views for every component
-routes/web.php        # App routes
+└── livewire/          # Blade views for Livewire components
+
+routes/
+└── web.php            # Application routes
+
+docs/
+└── assets/            # Project documentation assets
 ```
 
-## 🧪 Running Tests
+## 🚀 Getting Started
+
+### Requirements
+
+- PHP >= 8.2
+- Composer
+- Node.js >= 18
+- npm
+
+### Installation
+
+```bash
+git clone https://github.com/RezaSahraie/DoNext.git
+cd DoNext
+
+composer install
+npm install
+
+cp .env.example .env
+php artisan key:generate
+
+# SQLite (default)
+touch database/database.sqlite
+php artisan migrate
+
+composer run dev
+```
+
+Open **http://localhost:8000** and create an account to start using DoNext.
+
+## 🧪 Testing
 
 ```bash
 php artisan test
 ```
 
-## 🗺️ Roadmap
-
-- [ ] Recurring tasks
-- [ ] Task reminders / notifications
-- [ ] Drag-and-drop reordering
-- [ ] Dark mode
-- [ ] Team / shared workspaces
-
 ## 🤝 Contributing
 
-Contributions are welcome! Feel free to open an issue or submit a pull request.
+Contributions, bug reports, and ideas are welcome. Feel free to open an issue or submit a pull request.
 
 ## 📄 License
 
-Released under the MIT License.
+DoNext is released under the **MIT License**.
 
-<p align="center"><sub>Made with ❤️ using Laravel &amp; Livewire</sub></p>
+<p align="center">
+  <sub>Built with ❤️ using Laravel & Livewire</sub>
+</p>
