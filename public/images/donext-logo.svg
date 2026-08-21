@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256" role="img" aria-labelledby="title desc">
+  <title id="title">DoNext logo</title>
+  <desc id="desc">A modern indigo task-management logo combining a D with a check mark.</desc>
+  <defs>
+    <linearGradient id="g" x1="24" y1="24" x2="232" y2="232" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#6366F1"/>
+      <stop offset="1" stop-color="#4338CA"/>
+    </linearGradient>
+  </defs>
+  <rect x="12" y="12" width="232" height="232" rx="58" fill="url(#g)"/>
+  <path d="M72 62h48c45 0 74 25 74 66s-29 66-74 66H72V62Zm42 94c23 0 36-10 36-28s-13-28-36-28h-4v56h4Z" fill="#fff" opacity=".98"/>
+  <path d="M72 151l24 23 54-58" fill="none" stroke="#A5F3FC" stroke-linecap="round" stroke-linejoin="round" stroke-width="14"/>
+</svg>

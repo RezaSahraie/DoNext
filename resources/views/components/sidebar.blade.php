@@ -3,7 +3,7 @@
     class="fixed inset-y-0 start-0 z-50 hidden w-72 flex-col border-e border-slate-200 bg-white/95 p-5 shadow-sm backdrop-blur-xl dark:border-slate-800 dark:bg-slate-950/95 lg:flex">
     <div class="mb-8 flex items-center justify-between">
         <a href="{{ url('/dashboard') }}" class="flex items-center gap-3">
-            <div class="grid h-11 w-11 place-items-center rounded-2xl bg-indigo-600 text-xl font-black text-white shadow-lg shadow-indigo-500/25">D</div>
+            <img src="{{ asset('images/donext-logo.svg') }}" alt="DoNext" class="h-11 w-11 rounded-2xl shadow-lg shadow-indigo-500/20">
             <div><h1 class="text-lg font-black tracking-tight">DoNext</h1><p class="text-[11px] font-medium text-slate-400">Get things done.</p></div>
         </a>
     </div>
