@@ -130,7 +130,8 @@
                             dir="{{ $isFa ? 'rtl' : 'ltr' }}"
                             class="w-full resize-none rounded-xl border border-slate-200 bg-slate-50 px-3 py-2.5 text-sm text-slate-900 outline-none placeholder:text-slate-400 focus:border-indigo-500 focus:ring-2 focus:ring-indigo-500/20 dark:border-slate-700 dark:bg-slate-800 dark:text-white dark:placeholder:text-slate-500"
                         ></textarea>
-                        @error('quickDescription')<p class="text-sm text-red-500">{{ $message }}</p>@enderror\ن
+                        @error('quickDescription')<p class="text-sm text-red-500">{{ $message }}</p>@enderror
+
                         <select wire:model="quickPriority" class="h-11 w-full rounded-xl border border-slate-200 bg-slate-50 px-3 text-sm text-slate-900 outline-none focus:border-indigo-500 dark:border-slate-700 dark:bg-slate-800 dark:text-white">
                             <option value="low">{{ $isFa ? 'کم' : 'Low' }}</option>
                             <option value="medium">{{ $isFa ? 'متوسط' : 'Medium' }}</option>
